@@ -20,6 +20,12 @@
     .discovery-hero-side p{max-width:500px;line-height:1.55;margin:0 0 22px}
     @media(max-width:850px){.discovery-hero{grid-template-columns:1fr;gap:0}.discovery-hero-side{padding:0}.discovery-hero-side p{max-width:560px}.signal-badge{margin-top:25px}}
     .empty-signal[hidden],.artist-results[hidden]{display:none!important}
+    .artist-card.artist-card-enter{will-change:transform,opacity;animation-name:artistBubbleRise;animation-duration:.9s;animation-timing-function:cubic-bezier(.18,.78,.24,1)}
+    @keyframes artistBubbleRise{0%{opacity:0;transform:translateY(58px) scale(.985)}65%{opacity:1;transform:translateY(-4px) scale(1.002)}100%{opacity:1;transform:translateY(0) scale(1)}}
+    .artist-status strong{border-radius:999px;padding:4px 9px;margin-right:8px;box-shadow:0 0 0 1px currentColor,0 0 14px currentColor;animation:statusPulse 2.8s ease-in-out infinite}
+    .artist-status.status-active strong{color:#68e39a}.artist-status.status-inactive strong{color:#ff6f7e}.artist-status.status-ending_soon strong{color:#ffb45f}.artist-status.status-hiatus strong{color:#f4d76b}
+    @keyframes statusPulse{0%,100%{opacity:.78;box-shadow:0 0 0 1px currentColor,0 0 8px color-mix(in srgb,currentColor 25%,transparent)}50%{opacity:1;box-shadow:0 0 0 1px currentColor,0 0 18px color-mix(in srgb,currentColor 48%,transparent)}}
+    @media(prefers-reduced-motion:reduce){.artist-card.artist-card-enter{animation:none}.artist-status strong{animation:none}}
   </style>
 </head>
 <body>
@@ -46,17 +52,18 @@
     const emptySignal=document.getElementById('empty-signal'),results=document.getElementById('artist-results');
     const search=document.getElementById('artist-search');
 
+    function normalizeSearch(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
     function artistGenres(artist){return (artist.artist_genres||[]).map(item=>item.genres?.name).filter(Boolean)}
     function artistAliases(artist){return artist.aliases||[]}
     function artistAffiliations(artist){return (artist.artist_affiliations||[]).map(item=>item.name).filter(Boolean)}
     function renderArtists(){
-      const term=search.value.trim().toLowerCase();
+      const term=normalizeSearch(search.value);
       const visible=state.artists.filter(artist=>{
-        const searchable=[artist.name,...artistAliases(artist),...artistAffiliations(artist)].join(' ').toLowerCase();
+        const searchable=normalizeSearch([artist.name,...artistAliases(artist),...artistAffiliations(artist)].join(' '));
         return !term||searchable.includes(term);
       });
       if(!state.artists.length){emptySignal.hidden=true;results.hidden=true;return}
-      emptySignal.hidden=!(term&&visible.length===0);results.hidden=visible.length===0;results.innerHTML=visible.length?visible.map((artist,index)=>{const aliases=artistAliases(artist);const affiliations=artistAffiliations(artist);const genres=artistGenres(artist);const rowDelay=Math.min(index,14)*55;return `<article class="artist-card artist-card-enter" style="--row-delay:${rowDelay}ms"><div><h3>${artist.name}</h3>${aliases.length?`<p class="artist-meta">Formerly ${aliases.join(', ')}</p>`:''}</div><div><div class="artist-meta">PROFILE</div><p>${artist.biography||'Profile description coming soon.'}</p>${affiliations.length?`<p class="artist-meta">Connected to ${affiliations.join(', ')}</p>`:''}</div><div><div class="artist-meta">LOCATION</div><p>${artist.city||'City coming soon'}${artist.country?`, ${artist.country}`:''}</p></div><div><div class="artist-meta">GENRES</div><p>${genres.join(' · ')||'Genre coming soon'}</p></div><div class="artist-status"><strong>${artist.activity_status||'Active'}</strong><small>${artist.status||'Unlisted'} · ${artist.momentum_score||0} momentum</small></div></article>`}).join(''):'<p class="loading-copy">No artists match that search yet.</p>';
+      emptySignal.hidden=!(term&&visible.length===0);results.hidden=visible.length===0;results.innerHTML=visible.length?visible.map((artist,index)=>{const aliases=artistAliases(artist);const affiliations=artistAffiliations(artist);const genres=artistGenres(artist);const activityStatus=(artist.activity_status||'active').toLowerCase();const rowDelay=Math.min(index,14)*55;return `<article class="artist-card artist-card-enter" style="--row-delay:${rowDelay}ms"><div><h3>${artist.name}</h3>${aliases.length?`<p class="artist-meta">Formerly ${aliases.join(', ')}</p>`:''}</div><div><div class="artist-meta">PROFILE</div><p>${artist.biography||'Profile description coming soon.'}</p>${affiliations.length?`<p class="artist-meta">Connected to ${affiliations.join(', ')}</p>`:''}</div><div><div class="artist-meta">LOCATION</div><p>${artist.city||'City coming soon'}${artist.country?`, ${artist.country}`:''}</p></div><div><div class="artist-meta">GENRES</div><p>${genres.join(' · ')||'Genre coming soon'}</p></div><div class="artist-status status-${activityStatus}"><strong>${activityStatus.replace('_',' ')}</strong><small>${artist.status||'Unlisted'} · ${artist.momentum_score||0} momentum</small></div></article>`}).join(''):'<p class="loading-copy">No artists match that search yet.</p>';
     }
     async function loadArtists(){
       try{
