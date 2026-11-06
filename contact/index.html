@@ -1,1 +1,45 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Contact DanceFreq with artist recommendations, corrections, ideas, and collaboration opportunities.">
+  <title>Contact — DanceFreq</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/page.css">
+  <style>
+    .contact-page{padding:150px 0 100px;min-height:calc(100vh - 190px)}
+    .contact-hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:70px;align-items:start}
+    .contact-hero h1{max-width:520px;font-size:clamp(54px,8vw,96px);line-height:.92;letter-spacing:-.075em;margin:18px 0 24px}
+    .contact-hero h1 span{background:linear-gradient(100deg,var(--orange),var(--pink) 52%,var(--blue));color:transparent;background-clip:text}
+    .contact-intro{max-width:470px;color:var(--muted);font-size:17px;line-height:1.65;margin:0}
+    .contact-note{display:flex;gap:12px;align-items:center;margin-top:32px;color:var(--muted);font-size:12px}
+    .contact-note i{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange)}
+    .contact-form{border:1px solid var(--line);border-radius:24px;padding:28px;background:linear-gradient(145deg,rgba(255,159,104,.06),rgba(217,45,145,.06) 55%,rgba(113,152,228,.05));box-shadow:0 24px 70px rgba(0,0,0,.2)}
+    .contact-form h2{font-size:23px;letter-spacing:-.04em;margin:0 0 20px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-grid label{display:grid;gap:7px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .form-grid label.full{grid-column:1/-1}
+    .form-grid input,.form-grid select,.form-grid textarea{width:100%;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(8,7,11,.72);color:var(--ink);padding:13px 14px;outline:0;font:inherit;font-size:14px;letter-spacing:0;text-transform:none;transition:border-color .2s,box-shadow .2s}
+    .form-grid textarea{min-height:140px;resize:vertical;line-height:1.5}
+    .form-grid input:focus,.form-grid select:focus,.form-grid textarea:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(244,93,120,.12)}
+    .form-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px}
+    .form-actions .btn{border:0;background:linear-gradient(105deg,var(--orange),var(--coral) 52%,var(--pink));color:#180b14;font-weight:800}
+    .form-status{margin:0;color:var(--muted);font-size:11px;text-align:right}
+    .contact-paths{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:72px;padding-top:24px;border-top:1px solid var(--line)}
+    .contact-path{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+    .contact-path small{color:var(--orange);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+    .contact-path p{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 0}
+    @media(max-width:800px){.contact-hero{grid-template-columns:1fr;gap:42px}.contact-form{max-width:680px}.contact-paths{grid-template-columns:1fr}}
+    @media(max-width:560px){.contact-page{padding-top:125px}.form-grid{grid-template-columns:1fr}.form-grid label.full{grid-column:auto}.form-actions{display:block}.form-status{text-align:left;margin-top:12px}}
+  </style>
+</head>
+<body>
+  <header><nav class="nav wrap" aria-label="Primary navigation"><a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt="DanceFreq logo"><span>DanceFreq</span></a><div class="links"><a href="/dj-discovery/">DJ Discovery</a><a href="/release-radar/">Release Radar</a><a href="/genre-gauge/">Genre Gauge</a><a href="/map/">Map</a><a href="/about/">About</a><a class="active" href="/contact/">Contact</a></div><button class="menu" aria-label="Open navigation">☰</button></nav></header>
+  <main class="contact-page"><div class="wrap"><div class="contact-hero"><section><div class="eyebrow">05 / Connect</div><h1>Send a <span>signal.</span></h1><p class="contact-intro">DanceFreq is built with the people who keep electronic music moving. Share an artist, correct a detail, tell us about your scene, or start a conversation about what comes next.</p><div class="contact-note"><i></i><span>Ideas, corrections, recommendations, and collaborations welcome.</span></div></section>
+    <form class="contact-form" id="contact-form"><h2>What’s on your frequency?</h2><div class="form-grid"><label>Name<input name="name" type="text" placeholder="Your name" required></label><label>Email<input name="email" type="email" placeholder="you@example.com" required></label><label class="full">Topic<select name="topic"><option>Artist recommendation</option><option>Data correction</option><option>Scene or genre insight</option><option>Collaboration</option><option>General hello</option></select></label><label class="full">Message<textarea name="message" placeholder="Tell us what you’re tuning into..." required></textarea></label></div><div class="form-actions"><button class="btn" type="submit">Send a signal ↗</button><p class="form-status" id="form-status">The inbox is being tuned in.</p></div></form></div>
+    <div class="contact-paths"><div class="contact-path"><small>01 / Recommend</small><p>Know an artist, label, or scene we should be tracking?</p></div><div class="contact-path"><small>02 / Refine</small><p>See something that needs a correction or a sharper signal?</p></div><div class="contact-path"><small>03 / Collaborate</small><p>Want to build something at the intersection of music and culture?</p></div></div></div></main>
+  <footer><div class="wrap footer-inner"><a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt=""><span>DanceFreq</span></a><div>Tune into what’s next</div></div></footer>
+  <script>document.getElementById('contact-form').addEventListener('submit',event=>{event.preventDefault();document.getElementById('form-status').textContent='Signal received — connect an inbox endpoint to send messages.';event.currentTarget.reset()});</script>
+</body></html>
