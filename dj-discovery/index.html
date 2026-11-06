@@ -17,10 +17,13 @@
     @media(max-width:560px){.directory-filters{grid-template-columns:1fr}.directory-filters .filter-reset{width:100%}}
     .search-wrap span{top:50%;left:20px;transform:translateY(-50%);display:grid;place-items:center;width:28px;height:28px}.search-wrap span svg{display:block;width:20px;height:20px}.artist-card.artist-card-enter{opacity:0;transform:translateY(24px);animation:artistRise .72s cubic-bezier(.2,.75,.25,1) forwards;animation-delay:var(--row-delay,0ms)}@keyframes artistRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.artist-card.artist-card-enter{opacity:1;transform:none;animation:none}}
     /* Keep the discovery heading left and its supporting signal description right. */
-    .discovery-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr);align-items:end;gap:70px}
-    .discovery-hero-side{align-self:end;padding-bottom:9px}
-    .discovery-hero-side p{max-width:500px;line-height:1.55;margin:0 0 22px}
-    @media(max-width:850px){.discovery-hero{grid-template-columns:1fr;gap:0}.discovery-hero-side{padding:0}.discovery-hero-side p{max-width:560px}.signal-badge{margin-top:25px}}
+    .discovery-page{padding-top:118px}
+    .discovery-hero{display:none}
+    .dashboard{border:0;background:transparent;padding:0;box-shadow:none}
+    .dashboard-head{display:none}
+    .artist-search-panel{padding:26px 0 34px;border-bottom:1px solid var(--line)}
+    .search-label{font-size:clamp(34px,5vw,58px);margin-bottom:22px}
+    @media(max-width:850px){.signal-badge{margin-top:25px}}
     .empty-signal[hidden],.artist-results[hidden]{display:none!important}
     .artist-card.artist-card-enter{will-change:transform,opacity;animation-name:artistBubbleRise;animation-duration:.9s;animation-timing-function:cubic-bezier(.18,.78,.24,1)}
     @keyframes artistBubbleRise{0%{opacity:0;transform:translateY(58px) scale(.985)}65%{opacity:1;transform:translateY(-4px) scale(1.002)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -48,8 +51,7 @@
 <body>
   <header><nav class="nav wrap" aria-label="Primary navigation"><a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt="DanceFreq logo"><span>DanceFreq</span></a><div class="links" id="nav-links"><a href="/dj-discovery/">DJ Discovery</a><a href="/release-radar/">Release Radar</a><a href="/genre-gauge/">Genre Gauge</a><a href="/map/">Map</a><a href="/about/">About</a><a href="/contact/">Contact</a></div><button class="menu" id="menu" aria-label="Open navigation" aria-expanded="false">☰</button></nav></header>
   <main class="discovery-page"><div class="wrap">
-    <div class="discovery-hero"><div><div class="eyebrow">02 / DJ Discovery</div><h1>Find the next <span>signal.</span></h1></div><div class="discovery-hero-side"><p>Explore the artists building momentum across electronic music’s most active scenes. The radar is being calibrated while DanceFreq builds its artist database.</p><div class="signal-badge">Radar calibration · WIP</div></div></div>
-    <section class="dashboard" aria-labelledby="artist-dashboard-title"><div class="dashboard-head"><div><h2 id="artist-dashboard-title">Artist radar</h2><p>Search by DJ name, former alias, group, or record label.</p></div></div>
+    <section class="dashboard" aria-labelledby="artist-search"><div class="dashboard-head"><div><h2 id="artist-dashboard-title">Artist radar</h2><p>Search by DJ name, former alias, group, or record label.</p></div></div>
       <div class="artist-search-panel"><label class="search-label" for="artist-search">Who are you tuning into?</label><div class="search-wrap"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></span><input id="artist-search" type="search" autocomplete="off" placeholder=""></div><div class="directory-filters" aria-label="Filter artists"><div class="filter-caption">Refine the radar</div><label class="filter-label">Genre<select id="genre-filter"><option value="">All genres</option></select></label><label class="filter-label">City<input id="city-filter" type="search" autocomplete="off" placeholder="Any city"></label><label class="filter-label">Country<select id="country-filter"><option value="">All countries</option></select></label><label class="filter-label">Status<select id="status-filter"><option value="">All statuses</option></select></label><label class="filter-label">Sort<select id="sort-filter"><option value="az">A–Z</option><option value="za">Z–A</option></select></label><button class="filter-reset" id="filter-reset" type="button">Reset filters</button></div></div>
       <div class="empty-signal" id="empty-signal" hidden><div class="radar-sweep" aria-hidden="true"></div><div class="empty-inner"><div class="empty-mark">:(</div><h3>No Signal Detected</h3><p>Uh oh, looks like this frequency is out of our radar. We’re still working on adding this missing DJ profile to the DanceFreq radar.</p><div class="empty-code">Artist data loading · Check back soon</div></div></div><div class="artist-results" id="artist-results" hidden></div>
       <div class="dashboard-footer"><span><strong>DJ Discovery</strong> · Database coming online soon</span><a href="/contact/">Suggest an artist ↗</a></div>
