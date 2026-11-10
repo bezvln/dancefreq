@@ -104,6 +104,16 @@
     .story-card.is-selected{position:fixed!important;z-index:50!important;top:50vh!important;left:50vw!important;right:auto!important;margin:0!important;width:min(420px,calc(100vw - 32px));height:min(560px,calc(100vh - 64px));min-height:0;transform:translate(-50%,-50%)!important;translate:0 0;scale:1!important;box-shadow:0 24px 70px rgba(0,0,0,.62);transition:width .5s cubic-bezier(.2,.8,.2,1),height .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
     .story-card.is-selected .story-card-inner{min-height:0;height:100%;transform:none}.story-card.is-selected .story-card-front{display:none}.story-card.is-selected .story-card-back{position:absolute;inset:0;transform:none;backface-visibility:visible;-webkit-backface-visibility:visible;padding:24px}.story-card.is-selected .story-card-back strong{font-size:18px;margin:12px 0 9px}.story-card.is-selected .story-card-back p{font-size:13px;line-height:1.6}.story-card.is-selected .story-gallery{margin-top:auto}.story-card.is-selected .story-gallery-slot{height:130px;font-size:10px}.story-card.is-selected .story-gallery-arrow{width:28px;height:28px;font-size:16px}
     .core-three-card.is-selected .core-artist-orbit{opacity:1;pointer-events:auto;transform:scale(1.6);z-index:4}.core-three-card.is-selected .core-artist{opacity:1}.core-three-card.is-selected .core-artist:nth-child(1){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(2){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(3){transform:translate(0,0) scale(1)}
+    /* Cards open in place rather than becoming a full-screen preview. Keep
+       the card's own rounded frame visible while enlarging the readable side. */
+    .story-card.is-flipped{z-index:20;scale:1.35;overflow:visible;border-radius:22px;box-shadow:0 18px 45px rgba(0,0,0,.48)}
+    .story-card.is-flipped .story-card-inner{border-radius:inherit;overflow:hidden}
+    .story-card.is-flipped .story-card-back{padding:16px;border-radius:inherit}
+    .story-card.is-flipped .story-card-back strong{font-size:14px;margin:8px 0 7px}
+    .story-card.is-flipped .story-card-back p{font-size:11px;line-height:1.5}
+    .story-card.is-flipped .story-gallery-slot{height:78px;font-size:9px}
+    .story-card.is-flipped .story-gallery-arrow{width:24px;height:24px}
+    .story-card.is-flipped .core-artist-orbit{opacity:1;pointer-events:auto}
     @media(max-width:520px){.creator-stage{min-height:820px}.creator-speech{top:calc(50% - 230px)}.creator-bubble{height:210px;min-height:210px}.story-card-inner{min-height:210px}.creator-bubble:nth-child(1){top:0;left:0;right:auto}.creator-bubble:nth-child(2){top:0;left:auto;right:0}.creator-bubble:nth-child(3){top:470px;left:0;right:auto;margin-left:0}.creator-bubble:nth-child(4){top:470px;left:auto;right:0}.story-card.is-selected{width:calc(100vw - 24px);height:calc(100vh - 40px)}.story-card.is-selected .story-card-back{padding:20px}.story-card.is-selected .story-gallery-slot{height:115px}}
     @media(prefers-reduced-motion:reduce){.profile-card,.profile-orbit,.milestone,.creator-stage,.creator-stage:before,.creator-stage:after,.creator-avatar small,.creator-bubble{transition:none;animation:none}}
   </style>
@@ -149,16 +159,16 @@
       bubble.setAttribute('tabindex','0');
       bubble.setAttribute('aria-expanded','false');
       bubble.innerHTML='<div class="story-card-inner"><div class="story-card-face story-card-front"><span class="bubble-number">'+item.number+'</span><strong>'+item.title+'</strong><p>'+item.short+'</p></div><div class="story-card-face story-card-back"><span class="bubble-number">'+item.number+'</span><strong>'+item.title+'</strong><p>'+item.detail+'</p><div class="story-gallery"><button class="story-gallery-arrow" type="button" data-direction="-1" aria-label="Previous images">‹</button><div class="story-gallery-track">'+slots+'</div><button class="story-gallery-arrow" type="button" data-direction="1" aria-label="Next images">›</button></div></div></div>';
-      const openCard=()=>{bubbleAnimations.forEach(animation=>animation.cancel());bubbleAnimations=[];storyBubbles.forEach(card=>card.classList.remove('is-selected'));bubble.classList.add('is-selected');creatorStage.classList.add('is-detailing');storyBackdrop.classList.add('is-visible');bubble.setAttribute('aria-expanded','true')};
-      const closeCard=()=>{bubble.classList.remove('is-selected');bubble.setAttribute('aria-expanded','false');creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')};
-      bubble.addEventListener('click',event=>{if(event.target.closest('.core-artist')||event.target.closest('.story-gallery-arrow'))return;if(bubble.classList.contains('is-selected'))closeCard();else openCard()});
-      bubble.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(bubble.classList.contains('is-selected'))closeCard();else openCard()}});
+      const openCard=()=>{bubbleAnimations.forEach(animation=>animation.cancel());bubbleAnimations=[];storyBubbles.forEach(card=>{card.classList.remove('is-flipped','is-selected');card.setAttribute('aria-expanded','false')});bubble.classList.add('is-flipped');bubble.setAttribute('aria-expanded','true')};
+      const closeCard=()=>{bubble.classList.remove('is-flipped','is-selected');bubble.setAttribute('aria-expanded','false')};
+      bubble.addEventListener('click',event=>{if(event.target.closest('.core-artist')||event.target.closest('.story-gallery-arrow'))return;if(bubble.classList.contains('is-flipped'))closeCard();else openCard()});
+      bubble.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();if(bubble.classList.contains('is-flipped'))closeCard();else openCard()}});
       bubble.querySelectorAll('.story-gallery-arrow').forEach(button=>button.addEventListener('click',event=>{event.stopPropagation();const track=button.parentElement.querySelector('.story-gallery-track');track.scrollBy({left:Number(button.dataset.direction)*track.clientWidth,behavior:'smooth'})}));
     });
     const coreThreeCard=storyBubbles[1];
     coreThreeCard.classList.add('core-three-card');
     coreThreeCard.insertAdjacentHTML('beforeend','<div class="core-artist-orbit" aria-label="Explore the core three"><a class="core-artist" data-name="Avicii" href="/dj-discovery/?search=Avicii" aria-label="Explore Avicii"><img src="/assets/core-three/avicii--icon.jpg" alt="Avicii"></a><a class="core-artist" data-name="Kygo" href="/dj-discovery/?search=Kygo" aria-label="Explore Kygo"><img src="/assets/core-three/kygo-icon.jpg" alt="Kygo"></a><a class="core-artist" data-name="Martin Garrix" href="/dj-discovery/?search=Martin%20Garrix" aria-label="Explore Martin Garrix"><img src="/assets/core-three/martingarrix-icon.jpg" alt="Martin Garrix"></a></div>');
-    storyBackdrop.addEventListener('click',()=>{const selected=storyBubbles.find(card=>card.classList.contains('is-selected'));if(selected){selected.classList.remove('is-selected');selected.setAttribute('aria-expanded','false')}creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')});
+    storyBackdrop.addEventListener('click',()=>{storyBubbles.forEach(card=>{card.classList.remove('is-flipped','is-selected');card.setAttribute('aria-expanded','false')});creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')});
     let bubbleAnimations=[];
     function animateStoryBubbles(open){
       bubbleAnimations.forEach(animation=>animation.cancel());
@@ -167,7 +177,7 @@
       const avatarBox=creatorAvatar.getBoundingClientRect();
       const centerX=avatarBox.left+avatarBox.width/2;
       const centerY=avatarBox.top+avatarBox.height/2;
-      if(!open){storyBubbles.forEach(card=>{card.classList.remove('is-selected');card.setAttribute('aria-expanded','false')});creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')}
+      if(!open){storyBubbles.forEach(card=>{card.classList.remove('is-selected','is-flipped');card.setAttribute('aria-expanded','false')});creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')}
       if(open){
         creatorStage.classList.add('is-open');
         requestAnimationFrame(()=>{
