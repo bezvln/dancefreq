@@ -9,9 +9,9 @@
   <link rel="stylesheet" href="/page.css">
   <style>
     :root{--about-accent:#ff9f68;--about-pink:#df398b;--about-blue:#7797df}
-    .about-page{padding:142px 0 100px;overflow:hidden}
+    .about-page{padding:142px 0 100px;overflow-x:clip}
     .about-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,390px);gap:80px;align-items:end;min-height:360px;padding-bottom:70px}
-    .about-intro h1{max-width:780px;margin:18px 0 0;font-size:clamp(64px,10vw,132px);line-height:.86;letter-spacing:-.085em}
+    .about-intro h1{max-width:900px;margin:18px 0 0;padding:0 .08em .08em 0;font-size:clamp(56px,8vw,118px);line-height:.9;letter-spacing:-.075em;overflow:visible}
     .about-intro h1 span{background:linear-gradient(105deg,var(--about-accent),var(--about-pink) 50%,var(--about-blue));color:transparent;background-clip:text}
     .about-intro p{max-width:360px;margin:0 0 8px;color:var(--muted);font-size:17px;line-height:1.65}
     .creator-section{position:relative;padding:72px 0 124px;border-top:1px solid var(--line);text-align:center}.creator-section>.eyebrow{margin-bottom:22px}.creator-copy{max-width:720px;margin:10px auto 0}.creator-copy h2{margin:0 0 14px;font-size:clamp(28px,4vw,50px);line-height:1;letter-spacing:-.065em}.creator-copy h2 span{background:linear-gradient(100deg,var(--about-accent),var(--about-pink),var(--about-blue));color:transparent;background-clip:text;-webkit-background-clip:text}.creator-copy p{max-width:650px;margin:0 auto;color:var(--muted);font-size:17px;line-height:1.6}.creator-copy p:first-of-type{font-size:clamp(20px,2.5vw,30px);color:var(--ink);letter-spacing:-.035em}.creator-copy p:last-of-type{margin-top:10px;font-size:12px;letter-spacing:.04em;color:var(--muted)}
@@ -107,7 +107,7 @@
     .creator-copy{margin-top:-22px}
     .creator-copy p:first-of-type{font-size:clamp(23px,2.7vw,34px);line-height:1.45}
     .creator-copy p:last-of-type{max-width:760px;margin-top:18px;font-size:clamp(17px,1.7vw,23px);line-height:1.65;letter-spacing:0;color:var(--muted)}
-    .creator-copy p:only-of-type{max-width:820px;margin-top:0;font-size:clamp(20px,2.1vw,28px);line-height:1.6;color:var(--muted)}
+    .creator-copy p:only-of-type{max-width:760px;margin-top:0;font-size:clamp(16px,1.4vw,18px);line-height:1.65;color:var(--muted)}
     .story-card.is-selected{position:fixed!important;z-index:50!important;top:50vh!important;left:50vw!important;right:auto!important;margin:0!important;width:min(420px,calc(100vw - 32px));height:min(560px,calc(100vh - 64px));min-height:0;transform:translate(-50%,-50%)!important;translate:0 0;scale:1!important;box-shadow:0 24px 70px rgba(0,0,0,.62);transition:width .5s cubic-bezier(.2,.8,.2,1),height .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
     .story-card.is-selected .story-card-inner{min-height:0;height:100%;transform:none}.story-card.is-selected .story-card-front{display:none}.story-card.is-selected .story-card-back{position:absolute;inset:0;transform:none;backface-visibility:visible;-webkit-backface-visibility:visible;padding:24px}.story-card.is-selected .story-card-back strong{font-size:18px;margin:12px 0 9px}.story-card.is-selected .story-card-back p{font-size:13px;line-height:1.6}.story-card.is-selected .story-gallery{margin-top:auto}.story-card.is-selected .story-gallery-slot{height:130px;font-size:10px}.story-card.is-selected .story-gallery-arrow{width:28px;height:28px;font-size:16px}
     .core-three-card.is-selected .core-artist-orbit{opacity:1;pointer-events:auto;transform:scale(1.6);z-index:4}.core-three-card.is-selected .core-artist{opacity:1}.core-three-card.is-selected .core-artist:nth-child(1){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(2){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(3){transform:translate(0,0) scale(1)}
@@ -142,6 +142,8 @@
     .story-card.is-flipped .story-gallery-track{width:100%}
     .story-card.is-flipped .story-gallery-slot{height:108px;min-width:100%;aspect-ratio:16/7;font-size:11px}
     .story-card.is-flipped .story-gallery-slot img{object-fit:cover}
+    .core-three-card.is-flipped .core-artist-orbit{transform:scale(1.6);transform-origin:center;z-index:4}
+    .core-three-card.is-flipped .core-artist{width:58px;height:58px}
     /* Explicit positions keep the four visible cards in chronological order
        after the removed third stage is filtered out of the original markup. */
     .creator-bubble[data-story-index="1"]{top:60px;left:2%;right:auto}
@@ -188,9 +190,8 @@
     storyBubbles.forEach((bubble,index)=>{
       const item=storyDetails[index];
       bubble.dataset.storyIndex=String(index+1);
-      const coreImages=['../avicii--icon.jpg','../kygo-icon.jpg','../martingarrix-icon.jpg'];
-      const hasMedia=index===0||index===1||index===2;
-      const slots=index===1?coreImages.map((src,imageIndex)=>'<span class="story-gallery-slot"><img src="'+src+'" alt="'+['Avicii','Kygo','Martin Garrix'][imageIndex]+'"></span>').join(''):['01','02','03'].map(label=>'<span class="story-gallery-slot story-media-slot" data-media-slot="'+item.number+'-'+label+'" aria-label="Reserved media slot">Media coming later</span>').join('');
+      const hasMedia=index===0||index===2;
+      const slots=['01','02','03'].map(label=>'<span class="story-gallery-slot story-media-slot" data-media-slot="'+item.number+'-'+label+'" aria-label="Reserved media slot">Media coming later</span>').join('');
       const gallery=hasMedia?'<div class="story-gallery"><button class="story-gallery-arrow" type="button" data-direction="-1" aria-label="Previous images">‹</button><div class="story-gallery-track">'+slots+'</div><button class="story-gallery-arrow" type="button" data-direction="1" aria-label="Next images">›</button></div>':'';
       bubble.classList.add('story-card');
       bubble.setAttribute('role','button');
