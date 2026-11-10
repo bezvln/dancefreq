@@ -101,6 +101,10 @@
     .story-detail-backdrop{position:fixed;z-index:40;inset:0;background:rgba(5,4,8,.28);opacity:0;pointer-events:none;transition:opacity .35s}.story-detail-backdrop.is-visible{opacity:1;pointer-events:auto}
     .creator-stage.is-detailing{transform:none!important}
     .creator-stage.is-detailing .creator-bubble:not(.is-selected){opacity:.18;pointer-events:none}
+    /* Tighten the creator composition without crowding the rotating speech bubble. */
+    .creator-section>.eyebrow{margin-bottom:10px}
+    .creator-stage{margin-top:-8px}
+    .creator-copy{margin-top:-22px}
     .story-card.is-selected{position:fixed!important;z-index:50!important;top:50vh!important;left:50vw!important;right:auto!important;margin:0!important;width:min(420px,calc(100vw - 32px));height:min(560px,calc(100vh - 64px));min-height:0;transform:translate(-50%,-50%)!important;translate:0 0;scale:1!important;box-shadow:0 24px 70px rgba(0,0,0,.62);transition:width .5s cubic-bezier(.2,.8,.2,1),height .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
     .story-card.is-selected .story-card-inner{min-height:0;height:100%;transform:none}.story-card.is-selected .story-card-front{display:none}.story-card.is-selected .story-card-back{position:absolute;inset:0;transform:none;backface-visibility:visible;-webkit-backface-visibility:visible;padding:24px}.story-card.is-selected .story-card-back strong{font-size:18px;margin:12px 0 9px}.story-card.is-selected .story-card-back p{font-size:13px;line-height:1.6}.story-card.is-selected .story-gallery{margin-top:auto}.story-card.is-selected .story-gallery-slot{height:130px;font-size:10px}.story-card.is-selected .story-gallery-arrow{width:28px;height:28px;font-size:16px}
     .core-three-card.is-selected .core-artist-orbit{opacity:1;pointer-events:auto;transform:scale(1.6);z-index:4}.core-three-card.is-selected .core-artist{opacity:1}.core-three-card.is-selected .core-artist:nth-child(1){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(2){transform:translate(0,0) scale(1)}.core-three-card.is-selected .core-artist:nth-child(3){transform:translate(0,0) scale(1)}
