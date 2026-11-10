@@ -55,6 +55,22 @@
     @keyframes creatorSpin{to{transform:rotate(360deg)}}
     @media(max-width:800px){.about-intro{display:block;min-height:0;padding-bottom:56px}.about-intro p{margin-top:30px}.creator-section{display:block;padding:70px 0 86px}.creator-stage{min-height:420px}.about-story{min-height:auto}.story-grid{display:flex;flex-direction:column;gap:30px}.profile-rail{position:relative;top:auto;min-height:320px;width:100%}.timeline{padding-left:62px}.timeline-track{left:18px}.timeline-progress{left:17px}.milestone-dot{left:-51px}.milestone{min-height:270px}}
     @media(max-width:520px){.about-page{padding-top:122px}.about-intro h1{font-size:clamp(58px,18vw,92px)}.creator-stage{min-height:500px}.creator-stage:before{width:350px;height:350px}.creator-stage:after{width:250px;height:250px}.creator-avatar{width:205px;height:205px}.creator-avatar svg{width:88px;height:88px}.creator-speech{top:calc(50% - 198px);width:230px}.creator-bubble{width:112px;min-height:124px;font-size:9px}.bubble-media{height:46px}.creator-bubble:nth-child(1){left:0;margin-left:0;top:100px}.creator-bubble:nth-child(2){right:0;left:auto;top:100px}.creator-bubble:nth-child(3){left:0;right:auto;top:250px;bottom:auto}.creator-bubble:nth-child(4){right:0;left:auto;top:250px;bottom:auto}.creator-bubble:nth-child(5){left:50%;right:auto;top:390px;bottom:auto;margin-left:-56px}.timeline{padding-left:48px}.timeline-track{left:12px}.timeline-progress{left:11px}.milestone-dot{left:-42px}}
+    .creator-bubble:hover,.creator-bubble:focus-within{scale:1.06;z-index:8;transition:scale .28s ease,box-shadow .28s ease;box-shadow:0 12px 34px rgba(0,0,0,.34)}
+    .core-three-card{z-index:4}
+    .core-artist-orbit{position:absolute;inset:-34px;z-index:1;pointer-events:none}
+    .core-artist{position:absolute;width:44px;height:44px;border:1px solid color-mix(in srgb,var(--about-accent) 70%,white);border-radius:50%;display:grid;place-items:center;background:#09080c;color:var(--ink);font-size:9px;font-weight:800;letter-spacing:.04em;text-decoration:none;opacity:0;pointer-events:auto;transition:border-color .25s,background .25s}
+    .core-artist:hover,.core-artist:focus-visible{border-color:var(--about-accent);background:var(--about-pink);color:var(--ink);outline:none}
+    .core-artist:nth-child(1){top:-8px;left:50%;transform:translate(42px,72px) scale(.2)}.core-artist:nth-child(2){left:-8px;top:50%;transform:translate(72px,0) scale(.2)}.core-artist:nth-child(3){right:-8px;top:50%;transform:translate(-72px,0) scale(.2)}
+    .core-three-card:hover .core-artist,.core-three-card:focus-within .core-artist{opacity:1;animation-duration:.72s;animation-timing-function:cubic-bezier(.2,.8,.2,1);animation-fill-mode:forwards}.core-three-card:hover .core-artist:nth-child(1),.core-three-card:focus-within .core-artist:nth-child(1){animation-name:coreArtistTop}.core-three-card:hover .core-artist:nth-child(2),.core-three-card:focus-within .core-artist:nth-child(2){animation-name:coreArtistLeft;animation-delay:.08s}.core-three-card:hover .core-artist:nth-child(3),.core-three-card:focus-within .core-artist:nth-child(3){animation-name:coreArtistRight;animation-delay:.16s}
+    @keyframes coreArtistTop{to{transform:translate(0,0) scale(1)}}@keyframes coreArtistLeft{to{transform:translate(0,0) scale(1)}}@keyframes coreArtistRight{to{transform:translate(0,0) scale(1)}}
+    /* Chronological layout: the cards read 01 → 05 from left to right without covering the profile. */
+    .creator-avatar{top:60%}
+    .creator-bubble:nth-child(1){top:92px;left:2%;right:auto}
+    .creator-bubble:nth-child(2){top:260px;left:18%;right:auto}
+    .creator-bubble:nth-child(3){top:0;left:50%;right:auto;margin-left:-72px}
+    .creator-bubble:nth-child(4){top:260px;left:auto;right:18%}
+    .creator-bubble:nth-child(5){top:92px;left:auto;right:2%}
+    @media(max-width:520px){.creator-stage{min-height:680px}.creator-avatar{top:30%}.creator-bubble:nth-child(1){top:0;left:0;right:auto}.creator-bubble:nth-child(2){top:0;left:auto;right:0}.creator-bubble:nth-child(3){top:350px;left:0;right:auto;margin-left:0}.creator-bubble:nth-child(4){top:350px;left:auto;right:0}.creator-bubble:nth-child(5){top:520px;left:50%;right:auto;margin-left:-56px}}
     @media(prefers-reduced-motion:reduce){.profile-card,.profile-orbit,.milestone,.creator-stage,.creator-stage:before,.creator-stage:after,.creator-avatar small,.creator-bubble{transition:none;animation:none}}
   </style>
 </head>
@@ -78,6 +94,9 @@
     const story=document.getElementById('about-story'),progressLine=document.querySelector('.timeline-progress'),milestones=[...document.querySelectorAll('.milestone')],profile=document.querySelector('.timeline-signal'),orbit=document.querySelector('.timeline-signal-orbit'),creatorStage=document.getElementById('creator-stage'),creatorAvatar=document.getElementById('creator-avatar'),creatorSpeech=document.querySelector('.creator-speech');
     function updateStory(){const bounds=story.getBoundingClientRect(),travel=Math.max(1,story.offsetHeight-innerHeight),progress=Math.min(1,Math.max(0,(innerHeight*.48-bounds.top)/travel));progressLine.style.height=`${progress*100}%`;const active=Math.min(milestones.length-1,Math.floor(progress*milestones.length));milestones.forEach((item,index)=>item.classList.toggle('is-past',index<active));milestones.forEach((item,index)=>item.classList.toggle('is-active',index===active));if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const drift=(progress-.15)*80;profile.style.transform=`translate3d(0,${drift}px,0)`;orbit.style.transform=`rotate(${-18+progress*110}deg) scale(${1+progress*.06})`}}
     const storyBubbles=[...document.querySelectorAll('.creator-bubble')];
+    const coreThreeCard=storyBubbles[1];
+    coreThreeCard.classList.add('core-three-card');
+    coreThreeCard.insertAdjacentHTML('beforeend','<div class="core-artist-orbit" aria-label="Explore the core three"><a class="core-artist" href="/dj-discovery/?search=Avicii" aria-label="Explore Avicii">AV</a><a class="core-artist" href="/dj-discovery/?search=Kygo" aria-label="Explore Kygo">KY</a><a class="core-artist" href="/dj-discovery/?search=Martin%20Garrix" aria-label="Explore Martin Garrix">MG</a></div>');
     let bubbleAnimations=[];
     function animateStoryBubbles(open){
       bubbleAnimations.forEach(animation=>animation.cancel());
@@ -119,6 +138,8 @@
         creatorStage.classList.remove('is-open');
         storyBubbles.forEach(bubble=>{bubble.style.transform='';bubble.style.opacity=''});
         bubbleAnimations=[];
+        window.clearTimeout(chatTimer);
+        chatTimer=window.setTimeout(cycleChat,1200);
       });
     }
     creatorAvatar.addEventListener('click',()=>{const open=!creatorStage.classList.contains('is-open');creatorAvatar.setAttribute('aria-expanded',String(open));window.clearTimeout(chatTimer);creatorStage.classList.remove('is-chatting');animateStoryBubbles(open)});
