@@ -118,6 +118,15 @@
     .story-card.is-flipped .story-gallery-slot{height:92px;font-size:9px}
     .story-card.is-flipped .story-gallery-arrow{width:26px;height:26px}
     .story-card.is-flipped .core-artist-orbit{opacity:1;pointer-events:auto}
+    /* Use a readable card turn instead of exposing a mirrored 3D face. */
+    .story-card-inner{transform:none!important;transition:transform .42s cubic-bezier(.2,.8,.2,1)}
+    .story-card-face{transform:none!important;backface-visibility:visible;-webkit-backface-visibility:visible;transition:opacity .24s ease,visibility .24s ease,transform .34s ease}
+    .story-card-back{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px) scale(.97)!important}
+    .story-card.is-flipped .story-card-front{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px) scale(.97)!important}
+    .story-card.is-flipped .story-card-back{opacity:1;visibility:visible;pointer-events:auto;transform:none!important}
+    .story-media-slot{background:linear-gradient(135deg,rgba(119,151,223,.08),rgba(223,57,139,.08));border-style:dashed}
+    .story-card.is-flipped{animation:storyCardTurn .48s cubic-bezier(.2,.8,.2,1)}
+    @keyframes storyCardTurn{0%{transform:rotateY(0deg)}45%{transform:rotateY(88deg)}100%{transform:rotateY(0deg)}}
     @media(max-width:520px){.creator-stage{min-height:820px}.creator-speech{top:calc(50% - 230px)}.creator-bubble{height:210px;min-height:210px}.story-card-inner{min-height:210px}.creator-bubble:nth-child(1){top:0;left:0;right:auto}.creator-bubble:nth-child(2){top:0;left:auto;right:0}.creator-bubble:nth-child(3){top:470px;left:0;right:auto;margin-left:0}.creator-bubble:nth-child(4){top:470px;left:auto;right:0}.story-card.is-flipped{scale:1.18}.story-card.is-flipped .story-card-back{padding:14px}.story-card.is-flipped .story-card-back strong{font-size:13px}.story-card.is-flipped .story-card-back p{font-size:10px}.story-card.is-flipped .story-gallery-slot{height:70px}.story-card.is-selected{width:calc(100vw - 24px);height:calc(100vh - 40px)}.story-card.is-selected .story-card-back{padding:20px}.story-card.is-selected .story-gallery-slot{height:115px}}
     @media(prefers-reduced-motion:reduce){.profile-card,.profile-orbit,.milestone,.creator-stage,.creator-stage:before,.creator-stage:after,.creator-avatar small,.creator-bubble{transition:none;animation:none}}
   </style>
@@ -151,13 +160,13 @@
     const storyDetails=[
       {number:'01',title:'First spark',short:'The moment EDM became something I wanted to understand and make my own.',detail:'I got into EDM after the 2010s golden age. At 13, experimenting with FL Studio and my first DDJ-400, John Summit’s “Deep End” sparked my interest in tech house.',},
       {number:'02',title:'Core three',short:'Avicii, Kygo, and Martin Garrix — the artists who opened the door.',detail:'These three artists shaped the beginning of my relationship with EDM: Avicii first, then Kygo, then Martin Garrix. Their sound and stories made the scene feel both massive and personal.',},
-      {number:'04',title:'The dream realized',short:'A long-time festival dream finally became real.',detail:'Tomorrowland Belgium 2025 was a milestone I had imagined since middle school. Experiencing the festival in person made the global scale of EDM feel tangible.',},
-      {number:'05',title:'Still in motion',short:'Still listening, learning, and turning the signal into DanceFreq.',detail:'Today, I am still a superfan figuring things out. DanceFreq is my way of following artists, sounds, scenes, and the wider impact of electronic dance music.',}
+      {number:'03',title:'The dream realized',short:'A long-time festival dream finally became real.',detail:'Tomorrowland Belgium 2025 was a milestone I had imagined since middle school. Experiencing the festival in person made the global scale of EDM feel tangible.',},
+      {number:'04',title:'Still in motion',short:'Still listening, learning, and turning the signal into DanceFreq.',detail:'Today, I am still a superfan figuring things out. DanceFreq is my way of following artists, sounds, scenes, and the wider impact of electronic dance music.',}
     ];
     storyBubbles.forEach((bubble,index)=>{
       const item=storyDetails[index];
-      const coreImages=['/assets/core-three/avicii--icon.jpg','/assets/core-three/kygo-icon.jpg','/assets/core-three/martingarrix-icon.jpg'];
-      const slots=index===1?coreImages.map((src,imageIndex)=>'<span class="story-gallery-slot"><img src="'+src+'" alt="'+['Avicii','Kygo','Martin Garrix'][imageIndex]+'"></span>').join(''):['01','02','03'].map(label=>'<span class="story-gallery-slot">image '+label+'</span>').join('');
+      const coreImages=['../avicii--icon.jpg','../kygo-icon.jpg','../martingarrix-icon.jpg'];
+      const slots=index===1?coreImages.map((src,imageIndex)=>'<span class="story-gallery-slot"><img src="'+src+'" alt="'+['Avicii','Kygo','Martin Garrix'][imageIndex]+'"></span>').join(''):['01','02','03'].map(label=>'<span class="story-gallery-slot story-media-slot" data-media-slot="'+item.number+'-'+label+'" aria-label="Reserved media slot">Add media later</span>').join('');
       bubble.classList.add('story-card');
       bubble.setAttribute('role','button');
       bubble.setAttribute('tabindex','0');
@@ -171,7 +180,7 @@
     });
     const coreThreeCard=storyBubbles[1];
     coreThreeCard.classList.add('core-three-card');
-    coreThreeCard.insertAdjacentHTML('beforeend','<div class="core-artist-orbit" aria-label="Explore the core three"><a class="core-artist" data-name="Avicii" href="/dj-discovery/?search=Avicii" aria-label="Explore Avicii"><img src="/assets/core-three/avicii--icon.jpg" alt="Avicii"></a><a class="core-artist" data-name="Kygo" href="/dj-discovery/?search=Kygo" aria-label="Explore Kygo"><img src="/assets/core-three/kygo-icon.jpg" alt="Kygo"></a><a class="core-artist" data-name="Martin Garrix" href="/dj-discovery/?search=Martin%20Garrix" aria-label="Explore Martin Garrix"><img src="/assets/core-three/martingarrix-icon.jpg" alt="Martin Garrix"></a></div>');
+    coreThreeCard.insertAdjacentHTML('beforeend','<div class="core-artist-orbit" aria-label="Explore the core three"><a class="core-artist" data-name="Avicii" href="/dj-discovery/?search=Avicii" aria-label="Explore Avicii"><img src="../avicii--icon.jpg" alt="Avicii"></a><a class="core-artist" data-name="Kygo" href="/dj-discovery/?search=Kygo" aria-label="Explore Kygo"><img src="../kygo-icon.jpg" alt="Kygo"></a><a class="core-artist" data-name="Martin Garrix" href="/dj-discovery/?search=Martin%20Garrix" aria-label="Explore Martin Garrix"><img src="../martingarrix-icon.jpg" alt="Martin Garrix"></a></div>');
     storyBackdrop.addEventListener('click',()=>{storyBubbles.forEach(card=>{card.classList.remove('is-flipped','is-selected');card.setAttribute('aria-expanded','false')});creatorStage.classList.remove('is-detailing');storyBackdrop.classList.remove('is-visible')});
     let bubbleAnimations=[];
     function animateStoryBubbles(open){
