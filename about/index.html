@@ -63,14 +63,19 @@
     .core-artist:nth-child(1){top:-8px;left:50%;transform:translate(42px,72px) scale(.2)}.core-artist:nth-child(2){left:-8px;top:50%;transform:translate(72px,0) scale(.2)}.core-artist:nth-child(3){right:-8px;top:50%;transform:translate(-72px,0) scale(.2)}
     .core-three-card:hover .core-artist,.core-three-card:focus-within .core-artist{opacity:1;animation-duration:.72s;animation-timing-function:cubic-bezier(.2,.8,.2,1);animation-fill-mode:forwards}.core-three-card:hover .core-artist:nth-child(1),.core-three-card:focus-within .core-artist:nth-child(1){animation-name:coreArtistTop}.core-three-card:hover .core-artist:nth-child(2),.core-three-card:focus-within .core-artist:nth-child(2){animation-name:coreArtistLeft;animation-delay:.08s}.core-three-card:hover .core-artist:nth-child(3),.core-three-card:focus-within .core-artist:nth-child(3){animation-name:coreArtistRight;animation-delay:.16s}
     @keyframes coreArtistTop{to{transform:translate(0,0) scale(1)}}@keyframes coreArtistLeft{to{transform:translate(0,0) scale(1)}}@keyframes coreArtistRight{to{transform:translate(0,0) scale(1)}}
+    @keyframes coreArtistFloatTop{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(2px,-4px) scale(1)}}@keyframes coreArtistFloatLeft{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-4px,2px) scale(1)}}@keyframes coreArtistFloatRight{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4px,3px) scale(1)}}
+    .core-three-card:hover .core-artist:nth-child(1),.core-three-card:focus-within .core-artist:nth-child(1){animation:coreArtistTop .72s cubic-bezier(.2,.8,.2,1) forwards,coreArtistFloatTop 4.8s ease-in-out .72s infinite}.core-three-card:hover .core-artist:nth-child(2),.core-three-card:focus-within .core-artist:nth-child(2){animation:coreArtistLeft .72s cubic-bezier(.2,.8,.2,1) .08s forwards,coreArtistFloatLeft 5.2s ease-in-out .8s infinite}.core-three-card:hover .core-artist:nth-child(3),.core-three-card:focus-within .core-artist:nth-child(3){animation:coreArtistRight .72s cubic-bezier(.2,.8,.2,1) .16s forwards,coreArtistFloatRight 5.6s ease-in-out .88s infinite}
     /* Chronological layout: the cards read 01 → 05 from left to right without covering the profile. */
-    .creator-avatar{top:60%}
+    .creator-stage{min-height:560px}
+    .creator-avatar{top:50%}
+    .creator-avatar img{object-position:50% 50%}
+    .creator-speech{top:calc(50% - 195px)}
     .creator-bubble:nth-child(1){top:92px;left:2%;right:auto}
     .creator-bubble:nth-child(2){top:260px;left:18%;right:auto}
-    .creator-bubble:nth-child(3){top:0;left:50%;right:auto;margin-left:-72px}
+    .creator-bubble:nth-child(3){top:-125px;left:50%;right:auto;margin-left:-72px}
     .creator-bubble:nth-child(4){top:260px;left:auto;right:18%}
     .creator-bubble:nth-child(5){top:92px;left:auto;right:2%}
-    @media(max-width:520px){.creator-stage{min-height:680px}.creator-avatar{top:30%}.creator-bubble:nth-child(1){top:0;left:0;right:auto}.creator-bubble:nth-child(2){top:0;left:auto;right:0}.creator-bubble:nth-child(3){top:350px;left:0;right:auto;margin-left:0}.creator-bubble:nth-child(4){top:350px;left:auto;right:0}.creator-bubble:nth-child(5){top:520px;left:50%;right:auto;margin-left:-56px}}
+    @media(max-width:520px){.creator-stage{min-height:780px}.creator-avatar{top:50%}.creator-speech{top:calc(50% - 198px)}.creator-bubble:nth-child(1){top:0;left:0;right:auto}.creator-bubble:nth-child(2){top:0;left:auto;right:0}.creator-bubble:nth-child(3){top:470px;left:0;right:auto;margin-left:0}.creator-bubble:nth-child(4){top:470px;left:auto;right:0}.creator-bubble:nth-child(5){top:630px;left:50%;right:auto;margin-left:-56px}}
     @media(prefers-reduced-motion:reduce){.profile-card,.profile-orbit,.milestone,.creator-stage,.creator-stage:before,.creator-stage:after,.creator-avatar small,.creator-bubble{transition:none;animation:none}}
   </style>
 </head>
@@ -102,9 +107,9 @@
       bubbleAnimations.forEach(animation=>animation.cancel());
       bubbleAnimations=[];
       const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const stageBox=creatorStage.getBoundingClientRect();
-      const centerX=stageBox.left+stageBox.width/2;
-      const centerY=stageBox.top+stageBox.height/2;
+      const avatarBox=creatorAvatar.getBoundingClientRect();
+      const centerX=avatarBox.left+avatarBox.width/2;
+      const centerY=avatarBox.top+avatarBox.height/2;
       if(open){
         creatorStage.classList.add('is-open');
         requestAnimationFrame(()=>{
@@ -115,9 +120,9 @@
             const direction=index%2===0?1:-1;
             const animation=bubble.animate([
               {transform:`translate(${dx}px,${dy}px) scale(.28) rotate(${direction*8}deg)`,opacity:0},
-              {transform:`translate(${dx*.58}px,${dy*.58}px) scale(.78) rotate(${direction*3}deg)`,opacity:.78,offset:.56},
+              {transform:`translate(${dx*.58}px,${dy*.58}px) scale(.82) rotate(${direction*2}deg)`,opacity:.82,offset:.52},
               {transform:'translate(0,0) scale(1) rotate(0deg)',opacity:1}
-            ],{duration:reducedMotion?1:1050+index*90,delay:reducedMotion?0:index*100,easing:'cubic-bezier(.18,.8,.2,1)',fill:'forwards'});
+            ],{duration:reducedMotion?1:900+index*75,delay:reducedMotion?0:index*85,easing:'cubic-bezier(.22,.78,.22,1)',fill:'forwards'});
             bubbleAnimations.push(animation);
           });
         });
@@ -130,9 +135,9 @@
         const direction=index%2===0?1:-1;
         return bubble.animate([
           {transform:'translate(0,0) scale(1) rotate(0deg)',opacity:1},
-          {transform:`translate(${dx*.58}px,${dy*.58}px) scale(.78) rotate(${direction*3}deg)`,opacity:.78,offset:.48},
+          {transform:`translate(${dx*.58}px,${dy*.58}px) scale(.82) rotate(${direction*2}deg)`,opacity:.82,offset:.5},
           {transform:`translate(${dx}px,${dy}px) scale(.28) rotate(${direction*8}deg)`,opacity:0}
-        ],{duration:reducedMotion?1:820+index*70,delay:reducedMotion?0:index*70,easing:'cubic-bezier(.7,0,.82,.2)',fill:'forwards'});
+        ],{duration:reducedMotion?1:760+index*60,delay:reducedMotion?0:index*65,easing:'cubic-bezier(.72,0,.84,.2)',fill:'forwards'});
       });
       Promise.all(bubbleAnimations.map(animation=>animation.finished.catch(()=>null))).then(()=>{
         creatorStage.classList.remove('is-open');
