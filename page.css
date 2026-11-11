@@ -23,6 +23,9 @@
   font-size:17px !important;
   line-height:1.65 !important;
 }
+/* The About title has three stacked lines, so give its descenders enough
+   vertical clearance while keeping the shared size and letter spacing. */
+.about-intro h1{line-height:1.02 !important;padding:0 .16em .16em 0 !important;overflow:visible !important}
 .about-page,
 .discovery-page,
 .genre-page,
