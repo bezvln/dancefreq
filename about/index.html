@@ -104,6 +104,7 @@
     .creator-stage.is-detailing .creator-bubble:not(.is-selected){opacity:.18;pointer-events:none}
     /* Tighten the creator composition without crowding the rotating speech bubble. */
     .creator-section>.eyebrow{margin-bottom:10px}
+    .creator-section>.eyebrow{position:relative;z-index:1;transform:translateY(42px)}
     .creator-stage{margin-top:-8px}
     .creator-copy{margin-top:-22px}
     .creator-copy p:first-of-type{font-size:clamp(23px,2.7vw,34px);line-height:1.45}
@@ -143,6 +144,8 @@
     .story-card.is-flipped .story-gallery-track{width:100%}
     .story-card.is-flipped .story-gallery-slot{height:108px;min-width:100%;aspect-ratio:16/7;font-size:11px}
     .story-card.is-flipped .story-gallery-slot img{object-fit:cover}
+    .story-card[data-story-index="3"].is-flipped .story-card-back{overflow:hidden}
+    .story-card[data-story-index="3"].is-flipped .story-gallery-slot{height:138px}
     .story-grid{display:block}
     .core-three-card.is-flipped .core-artist-orbit{transform:scale(1.6);transform-origin:center;z-index:4}
     .core-three-card.is-flipped .core-artist{width:58px;height:58px}
@@ -154,6 +157,39 @@
     .creator-bubble[data-story-index="4"]{top:60px;left:auto;right:2%}
     .creator-bubble[data-story-index="2"].is-flipped,.creator-bubble[data-story-index="3"].is-flipped{top:150px}
     @media(max-width:520px){.creator-bubble[data-story-index="1"]{top:0;left:0;right:auto}.creator-bubble[data-story-index="2"]{top:0;left:auto;right:0}.creator-bubble[data-story-index="3"]{top:470px;left:0;right:auto}.creator-bubble[data-story-index="4"]{top:470px;left:auto;right:0}.creator-bubble[data-story-index="2"].is-flipped,.creator-bubble[data-story-index="3"].is-flipped{top:190px}.story-card.is-flipped{width:min(300px,calc(100vw - 32px));height:440px;min-height:440px;scale:1}.story-card.is-flipped .story-card-back{padding:20px}.story-card.is-flipped .story-card-back strong{font-size:16px}.story-card.is-flipped .story-card-back p{font-size:12px}.story-card.is-flipped .story-gallery-slot{height:84px}}
+    /* Shared About-page typography: headings and supporting copy use one
+       consistent treatment across the creator section and timeline. */
+    .creator-copy h2,
+    .milestone h2{
+      font-family:inherit;
+      font-size:clamp(28px,3vw,46px);
+      line-height:.95;
+      letter-spacing:-.06em;
+      color:var(--ink);
+    }
+    .creator-copy > p,
+    .milestone > p{
+      max-width:760px;
+      margin:0 auto;
+      font-family:inherit;
+      font-size:clamp(20px,2.5vw,30px);
+      font-weight:400;
+      line-height:1.45;
+      letter-spacing:-.035em;
+      color:var(--muted);
+    }
+    .creator-copy > p:first-of-type,
+    .creator-copy > p:last-of-type{
+      margin-top:0;
+      font-size:clamp(20px,2.5vw,30px);
+      line-height:1.45;
+      letter-spacing:-.035em;
+      color:var(--muted);
+    }
+    .milestone-fact{
+      font-family:inherit;
+      color:var(--muted);
+    }
     @media(prefers-reduced-motion:reduce){.profile-card,.profile-orbit,.milestone,.creator-stage,.creator-stage:before,.creator-stage:after,.creator-avatar small,.creator-bubble{transition:none;animation:none}}
   </style>
 </head>
@@ -185,7 +221,7 @@
     const storyDetails=[
       {number:'01',title:'First spark',short:'The moment EDM became something I wanted to understand and make my own.',detail:'I got into EDM after the 2010s golden age. At 13, experimenting with FL Studio and my first DDJ-400, John Summit’s “Deep End” sparked my interest in tech house. At 16, I upgraded to an XDJ-RX3, but DJing didn’t really work out for me. It is still an open door I may re-explore in the future.',},
       {number:'02',title:'Core three',short:'Avicii, Kygo, and Martin Garrix — the artists who opened the door.',detail:'These three artists shaped the beginning of my relationship with EDM: Avicii first, then Kygo, then Martin Garrix. Their sound and stories made the scene feel both massive and personal.',},
-      {number:'03',title:'The dream realized',short:'A long-time festival dream finally became real.',detail:'Tomorrowland Belgium 2025 was a milestone I had imagined since middle school. Even after the mainstage burned down, I loved seeing DJs and the community continue to live Tomorrowland’s motto: “Live Today, Love Tomorrow, Unite Forever.” It showed me how EDM can bring culture, art, and love together — and how people can stay united, present, and connected on the dance floor even when things do not go as planned.',},
+      {number:'03',title:'The dream realized',short:'A long-time festival dream finally became real.',detail:'Tomorrowland Belgium 2025 was a dream I had imagined since middle school. Even after the mainstage burned down, seeing DJs and the community live the motto “Live Today, Love Tomorrow, Unite Forever” reminded me how EDM brings culture, art, and love together — keeping people united and present on the dance floor when things do not go as planned.',},
       {number:'04',title:'Still in motion',short:'Still listening, learning, and turning the signal into DanceFreq.',detail:'Today, I am still a superfan figuring things out. DanceFreq is my way of following artists, sounds, scenes, and the wider impact of electronic dance music.',}
     ];
     storyBubbles.forEach((bubble,index)=>{
