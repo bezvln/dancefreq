@@ -7,8 +7,6 @@
 .discovery-hero h1,
 .genre-intro h1,
 .contact-hero h1,
-.map-hero h1,
-.release-hero h1,
 .placeholder h1{
   max-width:900px;
   margin:18px 0 0;
@@ -20,8 +18,6 @@
 .discovery-hero p,
 .genre-intro p,
 .contact-intro,
-.map-hero p,
-.release-hero p,
 .placeholder p{
   color:var(--muted);
   font-size:17px !important;
@@ -29,30 +25,21 @@
 }
 /* The About title has three stacked lines, so give its descenders enough
    vertical clearance while keeping the shared size and letter spacing. */
-.about-intro h1{max-width:1200px !important;font-size:clamp(56px,6.8vw,108px) !important;line-height:.9 !important;padding:0 .08em .08em 0 !important;overflow:visible !important}
-.about-intro h1 .about-title-line{display:inline-block;white-space:nowrap;background:none;color:var(--ink);-webkit-background-clip:initial;background-clip:initial}
-.about-intro h1 .about-title-line > span{background:linear-gradient(105deg,var(--about-accent),var(--about-pink) 50%,var(--about-blue));color:transparent;background-clip:text;-webkit-background-clip:text}
-.about-intro h1 .about-title-period{display:inline-block;padding:0 .14em .12em 0;line-height:1;overflow:visible}
+.about-intro h1{line-height:1.02 !important;padding:0 .16em .16em 0 !important;overflow:visible !important}
 .about-page,
 .discovery-page,
 .genre-page,
-.contact-page,
-.map-page,
-.release-page{
+.contact-page{
   padding-top:150px !important;
 }
 @media(max-width:560px){
   .about-page,
   .discovery-page,
   .genre-page,
-  .contact-page,
-  .map-page,
-  .release-page{padding-top:125px !important}
+  .contact-page{padding-top:125px !important}
   .about-intro h1,
   .discovery-hero h1,
   .genre-intro h1,
   .contact-hero h1,
-  .map-hero h1,
-  .release-hero h1,
   .placeholder h1{font-size:clamp(48px,12vw,78px) !important}
 }
