@@ -45,6 +45,15 @@
     @media(max-width:850px){.artist-flag{right:-4%;width:24%;font-size:78px}}
     @media(max-width:560px){.artist-flag{right:-5%;width:30%;font-size:72px;opacity:.08}}
 
+    /* Minimal discovery content: keep the data visible without decorative initials or card framing. */
+    .artist-flag{display:none!important}
+    .dashboard{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
+    .artist-search-panel,.dashboard-footer{border:0!important}
+    .artist-card.artist-card-enter,
+    .artist-card.artist-card-enter:first-of-type,
+    .artist-card.artist-card-enter:last-of-type{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+    .artist-card.artist-card-enter:after{display:none!important}
+
   </style>
   <link rel="stylesheet" href="/page.css">
 </head>
