@@ -97,8 +97,9 @@
     function artistInitials(name){return String(name||'DF').split(/\s+/).filter(Boolean).slice(0,2).map(part=>part[0]).join('').toUpperCase()}
     function artistGenres(artist){return (artist.artist_genres||[]).map(item=>item.genres?.name).filter(Boolean)}
     function artistAliases(artist){return artist.aliases||[]}
-    function artistSearchNames(artist){return [...artistAliases(artist),...(artist.slug==='yousuke-yukimatsu'?['Yousuke','Yousuke Yukimatsu']:[])]}
-    function artistSortName(artist){return artist.slug==='yousuke-yukimatsu'?'Yousuke Yukimatsu':artist.name}
+    function isYousuke(artist){const slug=String(artist.slug||'').toLowerCase(),name=String(artist.name||'').toLowerCase();return slug==='yousuke-yukimatsu'||slug.includes('yousuke')||name.includes('¥')||name.includes('uk1matsu')}
+    function artistSearchNames(artist){return [...artistAliases(artist),...(isYousuke(artist)?['Yousuke','Yousuke Yukimatsu']:[])]}
+    function artistSortName(artist){return isYousuke(artist)?'yousuke yukimatsu':normalizeSearch(artist.name)}
     function artistAffiliations(artist){return (artist.artist_affiliations||[]).filter(item=>item.name).map(item=>({name:item.name,type:item.relationship_type||'associated project'}))}
     function countryFlag(country){const flags={'Australia':'🇦🇺','France':'🇫🇷','Germany':'🇩🇪','Italy':'🇮🇹','Netherlands':'🇳🇱','United States':'🇺🇸','United Kingdom':'🇬🇧','Canada':'🇨🇦','Belgium':'🇧🇪','Brazil':'🇧🇷','Sweden':'🇸🇪','Norway':'🇳🇴','Denmark':'🇩🇰','Spain':'🇪🇸','Switzerland':'🇨🇭','Austria':'🇦🇹','Ireland':'🇮🇪','New Zealand':'🇳🇿','South Africa':'🇿🇦','Japan':'🇯🇵'};return flags[String(country||'').trim()]||''}
     function uniqueSorted(values){return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}))}
@@ -111,14 +112,14 @@
         const affiliations=artistAffiliations(artist),searchable=normalizeSearch([artist.name,...artistSearchNames(artist),...affiliations.map(item=>item.name)].join(' '));
         const genres=artistGenres(artist).map(normalizeSearch),artistCity=normalizeSearch(artist.city),artistCountry=normalizeSearch(artist.country),activityStatus=normalizeSearch(artist.activity_status||'active');
         return (!term||searchable.includes(term))&&(!genre||genres.includes(genre))&&(!city||artistCity.includes(city))&&(!country||artistCountry===country)&&(!status||activityStatus===status);
-      }).sort((a,b)=>artistSortName(a).localeCompare(artistSortName(b),undefined,{sensitivity:'base'}));
+      }).sort((a,b)=>{const left=artistSortName(a),right=artistSortName(b);return left<right?-1:left>right?1:0});
       if(sortFilter.value==='za')visible.reverse();
       if(!state.artists.length){emptySignal.hidden=true;results.hidden=true;return}
       emptySignal.hidden=!(term&&visible.length===0);results.hidden=visible.length===0&&Boolean(term);results.innerHTML=visible.length?visible.map((artist,index)=>{const aliases=artistAliases(artist);const affiliations=artistAffiliations(artist);const aliasAffiliations=affiliations.filter(item=>item.type.toLowerCase().startsWith('artist alias'));const aliasNames=[...new Set([...aliases,...aliasAffiliations.map(item=>item.name)])];const genres=artistGenres(artist);const activityStatus=(artist.activity_status||'active').toLowerCase();const rowDelay=Math.min(index,14)*55;const initials=artistInitials(artist.name);const isBeauz=artist.slug?.toLowerCase()==='beauz'||artist.name?.toLowerCase()==='beauz';const showImage=Boolean(artist.profile_image_url)&&!isBeauz;const image=showImage?`<img class="artist-avatar" src="${artist.profile_image_url}" alt="${artist.name}" loading="lazy" onerror="this.remove();this.nextElementSibling.hidden=false">`:'';const flag=countryFlag(artist.country);return `<article class="artist-card artist-card-enter" style="--row-delay:${rowDelay}ms"><span class="artist-flag" aria-hidden="true">${flag}</span><div class="artist-identity">${image}<span class="artist-avatar-fallback"${showImage?' hidden':''}>${initials}</span><div><h3>${artist.name}</h3>${aliasNames.length?`<p class="artist-meta">AKA ${aliasNames.join(', ')}</p>`:''}</div></div><div><div class="artist-meta">PROFILE</div><p>${artist.biography||'Profile description coming soon.'}</p></div><div><div class="artist-meta">LOCATION</div><p>${artist.city||'City coming soon'}${artist.country?`, ${artist.country}`:''}</p></div><div><div class="artist-meta">GENRES</div><p>${genres.join(' · ')||'Genre coming soon'}</p></div><div class="artist-status status-${activityStatus}"><strong>${activityStatus.replace('_',' ')}</strong></div></article>`}).join(''):activeFilters()?'<p class="loading-copy">No artists match these filters yet.</p>':'<p class="loading-copy">No artists match that search yet.</p>';if(visible.length)observeArtistCards();
     }
     async function loadArtists(){
       try{
-        const {data,error}=await db.from('artists').select('id,name,aliases,biography,profile_image_url,city,country,status,activity_status,momentum_score,artist_genres(is_primary,genres(name)),artist_affiliations(name,relationship_type,is_current)').eq('is_published',true).order('name',{ascending:true});
+        const {data,error}=await db.from('artists').select('id,name,slug,aliases,biography,profile_image_url,city,country,status,activity_status,momentum_score,artist_genres(is_primary,genres(name)),artist_affiliations(name,relationship_type,is_current)').eq('is_published',true).order('name',{ascending:true});
         if(error)throw error;state.artists=data||[];populateFilters();renderArtists();
       }catch(error){console.error('DanceFreq artist query failed:',error);}
     }
