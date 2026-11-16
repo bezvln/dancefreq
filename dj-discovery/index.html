@@ -95,7 +95,10 @@
 
     function normalizeSearch(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
     function artistInitials(name){return String(name||'DF').split(/\s+/).filter(Boolean).slice(0,2).map(part=>part[0]).join('').toUpperCase()}
-    function artistGenres(artist){return (artist.artist_genres||[]).map(item=>item.genres?.name).filter(Boolean)}
+    const MAIN_GENRES=['House','Techno','Trance','Dubstep','Drum & Bass','Hard Dance'];
+    function artistGenreRecords(artist){return (artist.artist_genres||[]).map(item=>({name:item.genres?.name,hub:item.genres?.hub})).filter(item=>item.name)}
+    function artistGenres(artist){return artistGenreRecords(artist).map(item=>item.name)}
+    function genreParent(record){if(MAIN_GENRES.includes(record.name))return record.name;if(record.hub==='Hardstyle & Hard Dance')return 'Hard Dance';return MAIN_GENRES.includes(record.hub)?record.hub:null}
     function artistAliases(artist){return artist.aliases||[]}
     function isYousuke(artist){const slug=String(artist.slug||'').toLowerCase(),name=String(artist.name||'').toLowerCase();return slug==='yousuke-yukimatsu'||slug.includes('yousuke')||name.includes('¥')||name.includes('uk1matsu')}
     function artistSearchNames(artist){return [...artistAliases(artist),...(isYousuke(artist)?['Yousuke','Yousuke Yukimatsu']:[])]}
@@ -104,13 +107,14 @@
     function countryFlag(country){const flags={'Australia':'🇦🇺','France':'🇫🇷','Germany':'🇩🇪','Italy':'🇮🇹','Netherlands':'🇳🇱','United States':'🇺🇸','United Kingdom':'🇬🇧','Canada':'🇨🇦','Belgium':'🇧🇪','Brazil':'🇧🇷','Sweden':'🇸🇪','Norway':'🇳🇴','Denmark':'🇩🇰','Spain':'🇪🇸','Switzerland':'🇨🇭','Austria':'🇦🇹','Ireland':'🇮🇪','New Zealand':'🇳🇿','South Africa':'🇿🇦','Japan':'🇯🇵'};return flags[String(country||'').trim()]||''}
     function uniqueSorted(values){return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}))}
     function setFilterOptions(select,values,placeholder){const current=select.value;select.innerHTML=`<option value="">${placeholder}</option>`+uniqueSorted(values).map(value=>`<option value="${normalizeSearch(value)}">${value}</option>`).join('');if([...select.options].some(option=>option.value===current))select.value=current}
-    function populateFilters(){setFilterOptions(genreFilter,state.artists.flatMap(artist=>artistGenres(artist)),'All genres');setFilterOptions(countryFilter,state.artists.map(artist=>artist.country),'All countries');setFilterOptions(statusFilter,state.artists.map(artist=>artist.activity_status||'active'),'All statuses')}
+    function setGenreOptions(){const current=genreFilter.value,subgenres=new Map(MAIN_GENRES.map(parent=>[parent,new Set()]));state.artists.flatMap(artist=>artistGenreRecords(artist)).forEach(record=>{const parent=genreParent(record);if(parent&&record.name!==parent)subgenres.get(parent).add(record.name)});genreFilter.innerHTML=`<option value="">All genres</option>`+MAIN_GENRES.map(parent=>`<optgroup label="${parent}"><option value="${normalizeSearch(parent)}">${parent}</option>${[...subgenres.get(parent)].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'})).map(subgenre=>`<option value="${normalizeSearch(subgenre)}">↳ ${subgenre}</option>`).join('')}</optgroup>`).join('');if([...genreFilter.options].some(option=>option.value===current))genreFilter.value=current}
+    function populateFilters(){setGenreOptions();setFilterOptions(countryFilter,state.artists.map(artist=>artist.country),'All countries');setFilterOptions(statusFilter,state.artists.map(artist=>artist.activity_status||'active'),'All statuses')}
     function activeFilters(){return Boolean(normalizeSearch(search.value)||genreFilter.value||normalizeSearch(cityFilter.value)||countryFilter.value||statusFilter.value)}
     function renderArtists(){
       const term=normalizeSearch(search.value),genre=genreFilter.value,city=normalizeSearch(cityFilter.value),country=countryFilter.value,status=statusFilter.value;
       const visible=state.artists.filter(artist=>{
         const affiliations=artistAffiliations(artist),searchable=normalizeSearch([artist.name,...artistSearchNames(artist),...affiliations.map(item=>item.name)].join(' '));
-        const genres=artistGenres(artist).map(normalizeSearch),artistCity=normalizeSearch(artist.city),artistCountry=normalizeSearch(artist.country),activityStatus=normalizeSearch(artist.activity_status||'active');
+        const genres=[...artistGenres(artist),...artistGenreRecords(artist).map(genreParent).filter(Boolean)].map(normalizeSearch),artistCity=normalizeSearch(artist.city),artistCountry=normalizeSearch(artist.country),activityStatus=normalizeSearch(artist.activity_status||'active');
         return (!term||searchable.includes(term))&&(!genre||genres.includes(genre))&&(!city||artistCity.includes(city))&&(!country||artistCountry===country)&&(!status||activityStatus===status);
       }).sort((a,b)=>{const left=artistSortName(a),right=artistSortName(b);return left<right?-1:left>right?1:0});
       if(sortFilter.value==='za')visible.reverse();
@@ -119,7 +123,7 @@
     }
     async function loadArtists(){
       try{
-        const {data,error}=await db.from('artists').select('id,name,slug,aliases,biography,profile_image_url,city,country,status,activity_status,momentum_score,artist_genres(is_primary,genres(name)),artist_affiliations(name,relationship_type,is_current)').eq('is_published',true).order('name',{ascending:true});
+        const {data,error}=await db.from('artists').select('id,name,slug,aliases,biography,profile_image_url,city,country,status,activity_status,momentum_score,artist_genres(is_primary,genres(name,hub)),artist_affiliations(name,relationship_type,is_current)').eq('is_published',true).order('name',{ascending:true});
         if(error)throw error;state.artists=data||[];populateFilters();renderArtists();
       }catch(error){console.error('DanceFreq artist query failed:',error);}
     }
