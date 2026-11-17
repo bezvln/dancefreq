@@ -74,6 +74,49 @@
     @media(max-width:900px){.artist-results{grid-template-columns:1fr}}
     @media(max-width:560px){.artist-results{grid-template-columns:1fr;gap:12px}.artist-card.artist-card-enter{display:grid;padding:20px;gap:18px}.artist-card.artist-card-enter h3{font-size:20px}}
 
+    /* Modern artist modules: image-led, compact, and easy to scan. */
+    .artist-results{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+    .artist-card.artist-card-enter,
+    .artist-card.artist-card-enter:first-of-type,
+    .artist-card.artist-card-enter:last-of-type{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      aspect-ratio:1;
+      min-height:210px;
+      padding:24px;
+      overflow:hidden;
+      border:0!important;
+      border-radius:24px!important;
+      background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012))!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+    }
+    .artist-card.artist-card-enter>div:first-of-type{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      width:100%;
+      padding:0;
+      border:0;
+    }
+    .artist-card.artist-card-enter .artist-identity{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+    .artist-card.artist-card-enter .artist-avatar,
+    .artist-card.artist-card-enter .artist-avatar-fallback{width:132px;height:132px;flex-basis:132px;border-radius:50%;font-size:28px}
+    .artist-card.artist-card-enter .artist-identity>div:last-child{text-align:center;width:100%}
+    .artist-card.artist-card-enter h3{font-size:20px;line-height:1.1;margin:0 0 6px;white-space:normal}
+    .artist-card.artist-card-enter .artist-meta{font-size:9px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+    .artist-card.artist-card-enter>div:nth-of-type(2),
+    .artist-card.artist-card-enter>div:nth-of-type(3),
+    .artist-card.artist-card-enter>div:nth-of-type(4){display:none}
+    .artist-card.artist-card-enter .artist-status{position:absolute;top:16px;right:16px;z-index:2;display:inline-flex;justify-self:auto;margin:0}
+    .artist-card.artist-card-enter .artist-status strong{font-size:10px;padding:4px 8px}
+    @media(max-width:900px){.artist-results{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}}
+    @media(max-width:560px){.artist-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.artist-card.artist-card-enter{min-height:0;padding:16px;border-radius:20px!important}.artist-card.artist-card-enter .artist-avatar,.artist-card.artist-card-enter .artist-avatar-fallback{width:100px;height:100px;flex-basis:100px}.artist-card.artist-card-enter h3{font-size:16px}.artist-card.artist-card-enter .artist-status{top:11px;right:11px}}
+
     /* Minimal discovery content: keep the data visible without decorative initials or card framing. */
     .artist-flag{display:none!important}
     .dashboard{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
