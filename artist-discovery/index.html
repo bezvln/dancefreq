@@ -45,6 +45,35 @@
     @media(max-width:850px){.artist-flag{right:-4%;width:24%;font-size:78px}}
     @media(max-width:560px){.artist-flag{right:-5%;width:30%;font-size:72px;opacity:.08}}
 
+    /* A calmer discovery layout: readable artist tiles instead of a dense database row. */
+    .artist-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-top:30px}
+    .artist-results:before{grid-column:1/-1;padding:0 4px 2px}
+    .artist-card.artist-card-enter,
+    .artist-card.artist-card-enter:first-of-type,
+    .artist-card.artist-card-enter:last-of-type{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:22px 28px;
+      padding:24px;
+      border:0!important;
+      border-radius:20px!important;
+      background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+    }
+    .artist-card.artist-card-enter>div:first-of-type{grid-column:1/-1;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .artist-card.artist-card-enter>div:nth-of-type(2){grid-column:1/-1}
+    .artist-card.artist-card-enter>div:nth-of-type(3),
+    .artist-card.artist-card-enter>div:nth-of-type(4){align-self:start}
+    .artist-card.artist-card-enter .artist-status{grid-column:1/-1;justify-self:start;align-self:start;margin-top:-4px}
+    .artist-card.artist-card-enter .artist-identity{gap:16px}
+    .artist-card.artist-card-enter .artist-avatar,
+    .artist-card.artist-card-enter .artist-avatar-fallback{width:58px;height:58px;flex-basis:58px}
+    .artist-card.artist-card-enter .artist-identity>div:last-child{text-align:left}
+    .artist-card.artist-card-enter h3{font-size:22px;margin-bottom:6px}
+    .artist-card.artist-card-enter p{font-size:13px;line-height:1.55}
+    @media(max-width:900px){.artist-results{grid-template-columns:1fr}}
+    @media(max-width:560px){.artist-results{grid-template-columns:1fr;gap:12px}.artist-card.artist-card-enter{display:grid;padding:20px;gap:18px}.artist-card.artist-card-enter h3{font-size:20px}}
+
     /* Minimal discovery content: keep the data visible without decorative initials or card framing. */
     .artist-flag{display:none!important}
     .dashboard{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
