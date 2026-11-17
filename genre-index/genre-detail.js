@@ -9,8 +9,14 @@ document.title=`${genreName} — Genre Index — DanceFreq`;
 document.getElementById('genre-title').textContent=genreName;
 document.getElementById('genre-description').textContent=`A guide to the artists, tracks, connected sounds, and scenes that give ${genreName} its character.`;
 
-const placeholderDjs=['Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder'];
-document.getElementById('dj-grid').innerHTML=placeholderDjs.map((name,index)=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${name}</h3><p>${genreName} · Artist signal</p><span class="placeholder-tag">Placeholder</span></article>`).join('');
+const placeholderDjs=[
+  {name:'Artist profile placeholder',role:'DJ / Producer'},
+  {name:'Artist profile placeholder',role:'Producer'},
+  {name:'Artist profile placeholder',role:'Singer / Artist'},
+  {name:'Artist profile placeholder',role:'Group'},
+  {name:'Artist profile placeholder',role:'Duo'}
+];
+document.getElementById('dj-grid').innerHTML=placeholderDjs.map(artist=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${artist.name}</h3><p class="dj-role">${artist.role}</p></article>`).join('');
 
 const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
 document.getElementById('track-list').innerHTML=placeholderTracks.map((title,index)=>`<div class="track-row"><span class="track-number">0${index+1}</span><div><strong>${title}</strong><small>Artist name placeholder · Label placeholder</small></div><span class="track-meta">${genreName}</span><span class="track-status">Coming soon</span></div>`).join('');
