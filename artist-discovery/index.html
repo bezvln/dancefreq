@@ -204,7 +204,7 @@
     function artistAliases(artist){return artist.aliases||[]}
     function isYousuke(artist){const slug=String(artist.slug||'').toLowerCase(),name=String(artist.name||'').toLowerCase();return slug==='yousuke-yukimatsu'||slug.includes('yousuke')||name.includes('¥')||name.includes('uk1matsu')}
     function artistSearchNames(artist){return [...artistAliases(artist),...(isYousuke(artist)?['Yousuke','Yousuke Yukimatsu']:[])]}
-    function artistSortName(artist){return isYousuke(artist)?'yousuke yukimatsu':normalizeSearch(artist.name)}
+    function artistSortName(artist){const normalized=normalizeSearch(artist.name);if(normalized==='3lau'||normalized==='blau')return 'blau';return isYousuke(artist)?'yousuke yukimatsu':normalized}
     function artistAffiliations(artist){return (artist.artist_affiliations||[]).filter(item=>item.name).map(item=>({name:item.name,type:item.relationship_type||'associated project'}))}
     function countryFlag(country){const flags={'Australia':'🇦🇺','France':'🇫🇷','Germany':'🇩🇪','Italy':'🇮🇹','Netherlands':'🇳🇱','United States':'🇺🇸','United Kingdom':'🇬🇧','Canada':'🇨🇦','Belgium':'🇧🇪','Brazil':'🇧🇷','Sweden':'🇸🇪','Norway':'🇳🇴','Denmark':'🇩🇰','Spain':'🇪🇸','Switzerland':'🇨🇭','Austria':'🇦🇹','Ireland':'🇮🇪','New Zealand':'🇳🇿','South Africa':'🇿🇦','Japan':'🇯🇵'};return flags[String(country||'').trim()]||''}
     function uniqueSorted(values){return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{sensitivity:'base'}))}
