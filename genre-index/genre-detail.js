@@ -1,151 +1,33 @@
-const SUPABASE_URL = "https://dkmssowizgbxfbhomkjf.supabase.co";
-const SUPABASE_KEY = "sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO";
-
-const params = new URLSearchParams(window.location.search);
-const requestedSlug = params.get("genre");
-
-const headers = {
-  apikey: SUPABASE_KEY,
-  Authorization: `Bearer ${SUPABASE_KEY}`
+const genreNames={
+  house:'House','afro-house':'Afro House','deep-house':'Deep House','tech-house':'Tech House',
+  techno:'Techno','melodic-techno':'Melodic Techno','trance':'Trance','hard-trance':'Hard Trance',
+  dubstep:'Dubstep','drum-and-bass':'Drum & Bass','hard-dance':'Hard Dance'
 };
+const slug=new URLSearchParams(location.search).get('genre')||'house';
+const genreName=genreNames[slug]||slug.replace(/-/g,' ').replace(/\b\w/g,letter=>letter.toUpperCase());
+document.title=`${genreName} — Genre Index — DanceFreq`;
+document.getElementById('genre-title').textContent=genreName;
 
-function slugify(value) {
-  return value
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+const placeholderDjs=['Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder'];
+document.getElementById('dj-grid').innerHTML=placeholderDjs.map((name,index)=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${name}</h3><p>${genreName} · Artist signal</p><span class="placeholder-tag">Placeholder</span></article>`).join('');
+
+const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
+document.getElementById('track-list').innerHTML=placeholderTracks.map((title,index)=>`<div class="track-row"><span class="track-number">0${index+1}</span><div><strong>${title}</strong><small>Artist name placeholder · Label placeholder</small></div><span class="track-meta">${genreName}</span><span class="track-status">Coming soon</span></div>`).join('');
+
+const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
+const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
+async function loadMetricPreview(){
+  try{
+    const query=new URLSearchParams({select:'*',name:`eq.${genreName}`,limit:'1'});
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/latest_genre_trends?${query}`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    if(!response.ok) return;
+    const trend=(await response.json())[0];
+    if(!trend) return;
+    const overall=Number(trend.overall_change_pct),confidence=Number(trend.confidence_score);
+    if(Number.isFinite(overall)) document.getElementById('overall-score').textContent=`${overall>=0?'+':''}${overall.toFixed(1)}%`;
+    if(Number.isFinite(trend.dj_change_pct)) document.getElementById('dj-score').textContent=`${trend.dj_change_pct>=0?'+':''}${Number(trend.dj_change_pct).toFixed(1)}%`;
+    if(Number.isFinite(trend.listener_change_pct)) document.getElementById('listener-score').textContent=`${trend.listener_change_pct>=0?'+':''}${Number(trend.listener_change_pct).toFixed(1)}%`;
+    if(Number.isFinite(confidence)) document.getElementById('confidence-score').textContent=`${confidence.toFixed(0)}%`;
+  }catch(error){/* Placeholder metrics remain visible until data is available. */}
 }
-
-function formatChange(value) {
-  if (value === null || value === undefined) return "—";
-  const number = Number(value);
-  return `${number >= 0 ? "+" : ""}${number.toFixed(1)}%`;
-}
-
-async function getJson(path) {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers
-  });
-
-  if (!response.ok) {
-    throw new Error(`Supabase request failed: ${response.status}`);
-  }
-
-  return response.json();
-}
-
-function renderMetric(label, value) {
-  return `
-    <div class="metric-card">
-      <span>${label}</span>
-      <strong>${value}</strong>
-    </div>
-  `;
-}
-
-function renderHistory(history) {
-  if (!history.length) {
-    return `<p class="empty-state">Historical metrics will appear here once data collection begins.</p>`;
-  }
-
-  const values = history
-    .map(item => Number(item.overall_score || 0))
-    .filter(value => Number.isFinite(value));
-
-  const max = Math.max(...values, 100);
-  const points = values
-    .map((value, index) => {
-      const x = (index / Math.max(values.length - 1, 1)) * 100;
-      const y = 100 - (value / max) * 100;
-      return `${x},${y}`;
-    })
-    .join(" ");
-
-  return `
-    <div class="chart-wrap">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="Genre trend history">
-        <polyline points="${points}" />
-      </svg>
-    </div>
-  `;
-}
-
-async function loadGenreDetail() {
-  const container = document.querySelector("#genre-detail");
-
-  try {
-    const genres = await getJson(
-      "genres?select=id,name,hub,description&order=name.asc"
-    );
-
-    const genre = genres.find(item => slugify(item.name) === requestedSlug);
-
-    if (!genre) {
-      container.innerHTML = `
-        <h1>Genre not found</h1>
-        <p class="empty-state">The requested genre could not be located.</p>
-      `;
-      return;
-    }
-
-    const trends = await getJson(
-      `latest_genre_trends?genre_id=eq.${genre.id}&select=*`
-    );
-
-    const history = await getJson(
-      `genre_trend_history?genre_id=eq.${genre.id}&select=*&order=metric_date.asc`
-    );
-
-    const trend = trends[0];
-
-    document.title = `${genre.name} · DanceFreq`;
-
-    container.innerHTML = `
-      <div class="genre-detail-heading">
-        <div>
-          <p class="parent-label">${genre.hub}</p>
-          <h1>${genre.name}</h1>
-          <p class="genre-description">
-            ${genre.description || "Explore how this genre is developing across DJs, producers, scenes, and listeners."}
-          </p>
-        </div>
-
-        <div class="trend-status">
-          ${trend?.trend_label || "Awaiting data"}
-        </div>
-      </div>
-
-      <section class="metric-grid">
-        ${renderMetric("DJ Momentum", formatChange(trend?.dj_change_pct))}
-        ${renderMetric("Listener Momentum", formatChange(trend?.listener_change_pct))}
-        ${renderMetric("Overall Signal", formatChange(trend?.overall_change_pct))}
-        ${renderMetric("Confidence", trend?.confidence_score ? `${trend.confidence_score}%` : "—")}
-      </section>
-
-      <section class="trend-panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">HISTORICAL SIGNAL</p>
-            <h2>How this genre has been moving</h2>
-          </div>
-          <span>Daily index</span>
-        </div>
-
-        ${renderHistory(history)}
-      </section>
-
-      <p class="data-note">
-        Metrics will become more detailed as DanceFreq connects verified listener,
-        DJ, release, festival, and setlist sources.
-      </p>
-    `;
-  } catch (error) {
-    container.innerHTML = `
-      <h1>Unable to load genre data</h1>
-      <p class="empty-state">${error.message}</p>
-    `;
-  }
-}
-
-loadGenreDetail();
+loadMetricPreview();
