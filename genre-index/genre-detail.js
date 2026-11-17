@@ -9,10 +9,10 @@ document.title=`${genreName} — Genre Index — DanceFreq`;
 document.getElementById('genre-title').textContent=genreName;
 document.getElementById('genre-description').textContent=`A guide to the artists, tracks, connected sounds, and scenes that give ${genreName} its character.`;
 
-const placeholderDjs=['Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder'];
+const placeholderDjs=['Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder'];
 document.getElementById('dj-grid').innerHTML=placeholderDjs.map((name,index)=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${name}</h3><p>${genreName} · Artist signal</p><span class="placeholder-tag">Placeholder</span></article>`).join('');
 
-const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
+const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
 document.getElementById('track-list').innerHTML=placeholderTracks.map((title,index)=>`<div class="track-row"><span class="track-number">0${index+1}</span><div><strong>${title}</strong><small>Artist name placeholder · Label placeholder</small></div><span class="track-meta">${genreName}</span><span class="track-status">Coming soon</span></div>`).join('');
 
 const connected={
@@ -23,8 +23,8 @@ const connected={
   'drum-and-bass':['Liquid Drum & Bass','Dancefloor D&B','Neurofunk','Jungle'],
   'hard-dance':['Hardstyle','Hard Trance','Rawstyle','Hardcore']
 };
-const related=connected[slug]||[];
-document.getElementById('related-genres').innerHTML=(related.length?related:['Connected subgenre placeholder','Adjacent sound placeholder']).map((name,index)=>`<a class="related-card" href="./genre-detail.html?genre=${name.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}"><small>0${index+1} · Explore</small><strong>${name}</strong><span>Connected sound</span></a>`).join('');
+const related=(connected[slug]||[]).slice(0,5);
+document.getElementById('related-genres').innerHTML=(related.length?related:['Connected sound placeholder','Adjacent sound placeholder','Subgenre placeholder','Scene connection placeholder','Related style placeholder']).slice(0,5).map((name,index)=>`<a class="related-card" href="./genre-detail.html?genre=${name.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}"><small>0${index+1} · Explore</small><strong>${name}</strong><span>Connected sound</span></a>`).join('');
 
 const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
 const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
