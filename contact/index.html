@@ -16,12 +16,14 @@
     .contact-note{display:flex;gap:12px;align-items:center;margin-top:32px;color:var(--muted);font-size:12px}
     .contact-note i{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange)}
     .contact-form{border:1px solid var(--line);border-radius:24px;padding:28px;background:linear-gradient(145deg,rgba(255,159,104,.06),rgba(217,45,145,.06) 55%,rgba(113,152,228,.05));box-shadow:0 24px 70px rgba(0,0,0,.2)}
+    .contact-hero{grid-template-columns:minmax(0,1fr) minmax(520px,1fr) !important}
+    .contact-form{padding:34px}
     .contact-form h2{font-size:23px;letter-spacing:-.04em;margin:0 0 20px}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .form-grid label{display:grid;gap:7px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
     .form-grid label.full{grid-column:1/-1}
     .form-grid input,.form-grid select,.form-grid textarea{width:100%;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(8,7,11,.72);color:var(--ink);padding:13px 14px;outline:0;font:inherit;font-size:14px;letter-spacing:0;text-transform:none;transition:border-color .2s,box-shadow .2s}
-    .form-grid textarea{min-height:140px;resize:vertical;line-height:1.5}
+    .form-grid textarea{min-height:170px;resize:vertical;line-height:1.5}
     .form-grid input:focus,.form-grid select:focus,.form-grid textarea:focus{border-color:var(--coral);box-shadow:0 0 0 3px rgba(244,93,120,.12)}
     .form-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px}
     .form-actions .btn{border:0;background:linear-gradient(105deg,var(--orange),var(--coral) 52%,var(--pink));color:#180b14;font-weight:800}
@@ -30,7 +32,7 @@
     .contact-path{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
     .contact-path small{color:var(--orange);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
     .contact-path p{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 0}
-    @media(max-width:800px){.contact-hero{grid-template-columns:1fr;gap:42px}.contact-form{max-width:680px}.contact-paths{grid-template-columns:1fr}}
+    @media(max-width:800px){.contact-hero{grid-template-columns:1fr !important;gap:42px}.contact-form{max-width:680px;padding:28px}.contact-paths{grid-template-columns:1fr}}
     @media(max-width:560px){.contact-page{padding-top:125px}.form-grid{grid-template-columns:1fr}.form-grid label.full{grid-column:auto}.form-actions{display:block}.form-status{text-align:left;margin-top:12px}}
   </style>
 </head>
