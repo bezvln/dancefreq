@@ -27,9 +27,9 @@
   font-size:17px !important;
   line-height:1.65 !important;
 }
-/* The About title has three stacked lines, so give its descenders enough
-   vertical clearance while keeping the shared size and letter spacing. */
-.about-intro h1{max-width:1200px !important;font-size:clamp(56px,6.8vw,108px) !important;line-height:.9 !important;padding:0 .08em .08em 0 !important;overflow:visible !important}
+/* About keeps its intentional two-line wording while using the same hero
+   measurements as every other interior page. */
+.about-intro h1{max-width:1200px !important;font-size:clamp(56px,8vw,118px) !important;line-height:.9 !important;padding:0 .08em .08em 0 !important;overflow:visible !important}
 .about-intro h1 .about-title-line{display:inline-block;white-space:nowrap;background:none;color:var(--ink);-webkit-background-clip:initial;background-clip:initial}
 .about-intro h1 .about-title-line > span{background:linear-gradient(105deg,var(--about-accent),var(--about-pink) 50%,var(--about-blue));color:transparent;background-clip:text;-webkit-background-clip:text}
 .about-intro h1 .about-title-period{display:inline-block;padding:0 .14em .12em 0;line-height:1;overflow:visible}
@@ -41,8 +41,6 @@
 .release-page{
   padding-top:150px !important;
 }
-/* Align the About hero with the other page headers without changing its layout. */
-.about-intro{transform:translateY(-30px)}
 .discovery-page{min-height:calc(100vh - 190px)}
 .discovery-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr);align-items:end;gap:70px;margin-bottom:42px}
 .discovery-hero-side{align-self:end;padding-bottom:9px}
