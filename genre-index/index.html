@@ -64,7 +64,14 @@
           <div><div class="eyebrow">Genre families</div><h2 id="families-title">Start broad. Go deeper.</h2></div>
           <p>Explore each family's individual subgenres, scenes, and evolving signals.</p>
         </div>
-        <div id="hub-grid" class="hub-grid"></div>
+        <div id="hub-grid" class="hub-grid">
+          <a class="hub-card" href="./genre-detail.html?genre=house"><small>01</small><h3>House</h3><p>Groove-led sounds from deep house to tech house.</p></a>
+          <a class="hub-card" href="./genre-detail.html?genre=techno"><small>02</small><h3>Techno</h3><p>Hypnotic, driving, and forward-moving club music.</p></a>
+          <a class="hub-card" href="./genre-detail.html?genre=trance"><small>03</small><h3>Trance</h3><p>Atmospheric, emotional, and uplifting electronic music.</p></a>
+          <a class="hub-card" href="./genre-detail.html?genre=dubstep"><small>04</small><h3>Dubstep</h3><p>Bass-heavy sounds built around impact and movement.</p></a>
+          <a class="hub-card" href="./genre-detail.html?genre=drum-and-bass"><small>05</small><h3>Drum &amp; Bass</h3><p>Fast breaks, heavy bass, and constantly evolving energy.</p></a>
+          <a class="hub-card" href="./genre-detail.html?genre=hard-dance"><small>06</small><h3>Hard Dance</h3><p>High-intensity electronic music built for movement and release.</p></a>
+        </div>
       </section>
 
       <section class="trending-section" aria-labelledby="trending-title">
@@ -83,11 +90,9 @@
     const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
     const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
     const hubs=[['House','house','Groove-led sounds from deep house to tech house.'],['Techno','techno','Hypnotic, driving, and forward-moving club music.'],['Trance','trance','Atmospheric, emotional, and uplifting electronic music.'],['Dubstep','dubstep','Bass-heavy sounds built around impact and movement.'],['Drum & Bass','drum-and-bass','Fast breaks, heavy bass, and constantly evolving energy.'],['Hard Dance','hard-dance','High-intensity sounds built for movement and release.']];
-    const hubGrid=document.getElementById('hub-grid');
     const trendGrid=document.getElementById('trend-grid');
     const detailUrl=slug=>'./genre-detail.html?genre='+encodeURIComponent(slug);
     const slugify=value=>String(value).toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    hubGrid.innerHTML=hubs.map(([name,slug,description],index)=>`<a class="hub-card" href="${detailUrl(slug)}"><small>0${index+1}</small><h3>${name}</h3><p>${description}</p></a>`).join('');
     async function loadTrends(){
       try{
         const response=await fetch(`${SUPABASE_URL}/rest/v1/latest_genre_trends?select=*&order=overall_change_pct.desc.nullslast&limit=6`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
