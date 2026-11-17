@@ -7,12 +7,24 @@ const slug=new URLSearchParams(location.search).get('genre')||'house';
 const genreName=genreNames[slug]||slug.replace(/-/g,' ').replace(/\b\w/g,letter=>letter.toUpperCase());
 document.title=`${genreName} — Genre Index — DanceFreq`;
 document.getElementById('genre-title').textContent=genreName;
+document.getElementById('genre-description').textContent=`A guide to the artists, tracks, connected sounds, and scenes that give ${genreName} its character.`;
 
 const placeholderDjs=['Artist profile placeholder','Artist profile placeholder','Artist profile placeholder','Artist profile placeholder'];
 document.getElementById('dj-grid').innerHTML=placeholderDjs.map((name,index)=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${name}</h3><p>${genreName} · Artist signal</p><span class="placeholder-tag">Placeholder</span></article>`).join('');
 
 const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
 document.getElementById('track-list').innerHTML=placeholderTracks.map((title,index)=>`<div class="track-row"><span class="track-number">0${index+1}</span><div><strong>${title}</strong><small>Artist name placeholder · Label placeholder</small></div><span class="track-meta">${genreName}</span><span class="track-status">Coming soon</span></div>`).join('');
+
+const connected={
+  house:['Afro House','Deep House','Tech House','Progressive House'],
+  techno:['Melodic Techno','Hard Techno','Minimal Techno','Acid Techno'],
+  trance:['Progressive Trance','Uplifting Trance','Hard Trance','Psytrance'],
+  dubstep:['Melodic Dubstep','Riddim','Future Bass','Color Bass'],
+  'drum-and-bass':['Liquid Drum & Bass','Dancefloor D&B','Neurofunk','Jungle'],
+  'hard-dance':['Hardstyle','Hard Trance','Rawstyle','Hardcore']
+};
+const related=connected[slug]||[];
+document.getElementById('related-genres').innerHTML=(related.length?related:['Connected subgenre placeholder','Adjacent sound placeholder']).map((name,index)=>`<a class="related-card" href="./genre-detail.html?genre=${name.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}"><small>0${index+1} · Explore</small><strong>${name}</strong><span>Connected sound</span></a>`).join('');
 
 const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
 const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
