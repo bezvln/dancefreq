@@ -1,335 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore DanceFreq's core genre families, subgenres, and evolving dance music trends.">
   <title>Genre Index — DanceFreq</title>
-
-  <link rel="icon" href="../favicon.png" />
-  <link rel="stylesheet" href="../page.css" />
-  <link rel="stylesheet" href="./genre-index.css" />
-
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/page.css">
   <style>
-    .genre-index-page {
-      padding-bottom: 120px;
-    }
-
-    .genre-hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
-      gap: 72px;
-      align-items: end;
-      padding: 110px 4vw 80px;
-    }
-
-    .genre-hero h1 {
-      max-width: 760px;
-      margin: 28px 0 0;
-      font-size: clamp(4rem, 9vw, 9rem);
-      line-height: 0.88;
-      letter-spacing: -0.08em;
-    }
-
-    .gradient-text {
-      background: linear-gradient(
-        100deg,
-        #ff956b 0%,
-        #eb3e83 42%,
-        #8c82dc 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .genre-hero-copy {
-      max-width: 560px;
-      padding-bottom: 14px;
-      color: #aaa1b4;
-      font-size: clamp(1.05rem, 1.8vw, 1.45rem);
-      line-height: 1.65;
-    }
-
-    .genre-overview {
-      padding: 0 4vw;
-    }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 24px;
-      margin-bottom: 28px;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      font-size: clamp(1.8rem, 3vw, 3rem);
-      letter-spacing: -0.04em;
-    }
-
-    .section-note {
-      max-width: 420px;
-      margin: 0;
-      color: #99919f;
-      line-height: 1.6;
-      text-align: right;
-    }
-
-    .hub-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .hub-card,
-    .trend-card {
-      display: block;
-      color: inherit;
-      text-decoration: none;
-      border: 1px solid rgba(156, 128, 165, 0.28);
-      background: rgba(22, 16, 23, 0.72);
-      transition:
-        transform 180ms ease,
-        border-color 180ms ease,
-        background 180ms ease;
-    }
-
-    .hub-card {
-      min-height: 190px;
-      padding: 26px;
-    }
-
-    .hub-card:hover,
-    .trend-card:hover {
-      transform: translateY(-4px);
-      border-color: #ff8967;
-      background: rgba(35, 22, 34, 0.9);
-    }
-
-    .hub-card-number {
-      display: block;
-      margin-bottom: 62px;
-      color: #ff956b;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-    }
-
-    .hub-card h3 {
-      margin: 0 0 8px;
-      font-size: 1.45rem;
-    }
-
-    .hub-card p {
-      margin: 0;
-      color: #98909e;
-      line-height: 1.5;
-    }
-
-    .trending-section {
-      margin-top: 92px;
-    }
-
-    .trend-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .trend-card {
-      padding: 22px;
-    }
-
-    .trend-card-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-
-    .trend-card-label,
-    .trend-card-change {
-      color: #ff956b;
-      font-size: 0.76rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-
-    .trend-card-change {
-      color: #70dfaa;
-      white-space: nowrap;
-    }
-
-    .trend-card h3 {
-      margin: 0 0 8px;
-      font-size: 1.35rem;
-    }
-
-    .trend-card p {
-      margin: 0;
-      color: #9f96a5;
-      line-height: 1.5;
-    }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      padding: 30px;
-      border: 1px solid rgba(156, 128, 165, 0.25);
-      color: #9f96a5;
-    }
-
-    @media (max-width: 900px) {
-      .genre-hero {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-
-      .genre-hero-copy {
-        max-width: 620px;
-      }
-
-      .section-heading {
-        display: block;
-      }
-
-      .section-note {
-        margin-top: 14px;
-        text-align: left;
-      }
-
-      .hub-grid,
-      .trend-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .genre-hero {
-        padding-top: 72px;
-      }
-
-      .hub-grid,
-      .trend-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hub-card {
-        min-height: 160px;
-      }
-    }
+    .genre-page{padding:142px 0 110px;overflow:hidden}
+    .genre-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,390px);gap:70px;align-items:end;margin-bottom:88px}
+    .genre-intro h1{max-width:720px;margin:18px 0 0;font-size:clamp(56px,8vw,112px);line-height:.88;letter-spacing:-.075em}
+    .genre-intro h1 span{background:linear-gradient(100deg,var(--orange),var(--pink) 52%,var(--blue));color:transparent;background-clip:text;-webkit-background-clip:text}
+    .genre-intro>p{max-width:390px;margin:0 0 8px;color:var(--muted);font-size:17px;line-height:1.65}
+    .genre-section-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:24px}
+    .genre-section-heading h2{margin:0;font-size:clamp(28px,4vw,48px);line-height:1;letter-spacing:-.06em}
+    .genre-section-heading p{max-width:390px;margin:0;color:var(--muted);font-size:13px;line-height:1.55;text-align:right}
+    .hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .hub-card,.trend-card{display:block;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--ink);text-decoration:none;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+    .hub-card{min-height:190px;padding:24px}
+    .hub-card:hover,.trend-card:hover{transform:translateY(-4px);border-color:var(--orange);background:rgba(255,159,104,.06)}
+    .hub-card small{display:block;margin-bottom:58px;color:var(--orange);font-size:10px;letter-spacing:.16em}
+    .hub-card h3,.trend-card h3{margin:0 0 8px;font-size:22px;letter-spacing:-.04em}
+    .hub-card p,.trend-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+    .trending-section{margin-top:92px}
+    .trend-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .trend-card{padding:22px}
+    .trend-card-top{display:flex;justify-content:space-between;gap:15px;margin-bottom:30px;color:var(--orange);font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+    .trend-card-change{color:#70dfaa;white-space:nowrap}
+    .empty-state{grid-column:1/-1;padding:26px;border:1px solid var(--line);color:var(--muted);font-size:13px}
+    @media(max-width:850px){.genre-intro{display:block;margin-bottom:62px}.genre-intro>p{margin-top:28px}.genre-section-heading{display:block}.genre-section-heading p{margin-top:14px;text-align:left}.hub-grid,.trend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:540px){.genre-page{padding-top:122px}.hub-grid,.trend-grid{grid-template-columns:1fr}.hub-card{min-height:160px}}
   </style>
 </head>
-
 <body>
-  <header class="site-header">
-    <a class="site-brand" href="../index.html" aria-label="DanceFreq home">
-      <img
-        src="../dancefreq-logo-transparent.png"
-        alt="DanceFreq"
-        class="site-logo"
-      />
-    </a>
-
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="../artist-discovery/">Artist Discovery</a>
-      <a href="../release-radar/">Release Radar</a>
-      <a class="active" href="./">Genre Index</a>
-      <a href="../global-scenes/">Global Scenes</a>
-      <a href="../about/">About</a>
-      <a href="../contact/">Contact</a>
+  <header>
+    <nav class="nav wrap" aria-label="Primary navigation">
+      <a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt="DanceFreq logo"><span>DanceFreq</span></a>
+      <div class="links">
+        <a href="/artist-discovery/">Artist Discovery</a>
+        <a href="/release-radar/">Release Radar</a>
+        <a class="active" href="/genre-index/">Genre Index</a>
+        <a href="/global-scenes/">Global Scenes</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </div>
+      <button class="menu" aria-label="Open navigation">☰</button>
     </nav>
   </header>
 
-  <main class="genre-index-page">
-    <section class="genre-hero">
-      <div>
-        <p class="eyebrow">04 / GENRE INDEX</p>
-
-        <h1>
-          Find your<br />
-          <span class="gradient-text">frequency.</span>
-        </h1>
-      </div>
-
-      <p class="genre-hero-copy">
-        Start with broad genre families, then explore the subgenres and
-        connected sounds orbiting each one.
-      </p>
-    </section>
-
-    <section class="genre-overview" aria-labelledby="genre-families-title">
-      <div class="section-heading">
+  <main class="genre-page">
+    <div class="wrap">
+      <section class="genre-intro">
         <div>
-          <p class="eyebrow">GENRE FAMILIES</p>
-          <h2 id="genre-families-title">Start broad. Go deeper.</h2>
+          <div class="eyebrow">04 / Genre Index</div>
+          <h1>Find your <span>frequency.</span></h1>
         </div>
+        <p>Start with broad genre families, then explore the subgenres and connected sounds orbiting each one.</p>
+      </section>
 
-        <p class="section-note">
-          Explore each family’s individual subgenres, scenes, and evolving
-          signals.
-        </p>
-      </div>
-
-      <div id="hub-grid" class="hub-grid">
-        <a class="hub-card" href="./genre-detail.html?genre=house">
-          <span class="hub-card-number">01</span>
-          <h3>House</h3>
-          <p>Groove-led sounds from deep house to tech house.</p>
-        </a>
-
-        <a class="hub-card" href="./genre-detail.html?genre=techno">
-          <span class="hub-card-number">02</span>
-          <h3>Techno</h3>
-          <p>Hypnotic, driving, and forward-moving club music.</p>
-        </a>
-
-        <a class="hub-card" href="./genre-detail.html?genre=trance">
-          <span class="hub-card-number">03</span>
-          <h3>Trance</h3>
-          <p>Atmospheric, emotional, and uplifting electronic music.</p>
-        </a>
-
-        <a class="hub-card" href="./genre-detail.html?genre=dubstep">
-          <span class="hub-card-number">04</span>
-          <h3>Dubstep</h3>
-          <p>Bass-heavy sounds built around impact and movement.</p>
-        </a>
-
-        <a class="hub-card" href="./genre-detail.html?genre=drum-and-bass">
-          <span class="hub-card-number">05</span>
-          <h3>Drum &amp; Bass</h3>
-          <p>Fast breaks, heavy bass, and constantly evolving energy.</p>
-        </a>
-
-        <a class="hub-card" href="./genre-detail.html?genre=hard-dance">
-          <span class="hub-card-number">06</span>
-          <h3>Hard Dance</h3>
-          <p>High-intensity sounds built for movement and release.</p>
-        </a>
-      </div>
-
-      <div class="trending-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">CURRENT SIGNAL</p>
-            <h2>Trending subgenres</h2>
-          </div>
-
-          <p class="section-note">
-            A quick view of what is gaining momentum across the wider dance
-            music ecosystem.
-          </p>
+      <section aria-labelledby="families-title">
+        <div class="genre-section-heading">
+          <div><div class="eyebrow">Genre families</div><h2 id="families-title">Start broad. Go deeper.</h2></div>
+          <p>Explore each family's individual subgenres, scenes, and evolving signals.</p>
         </div>
+        <div id="hub-grid" class="hub-grid"></div>
+      </section>
 
-        <div id="trend-grid" class="trend-grid" aria-live="polite">
-          <div class="empty-state">
-            Loading the latest genre signals…
-          </div>
+      <section class="trending-section" aria-labelledby="trending-title">
+        <div class="genre-section-heading">
+          <div><div class="eyebrow">Current signal</div><h2 id="trending-title">Trending subgenres</h2></div>
+          <p>A quick view of what is gaining momentum across the wider dance music ecosystem.</p>
         </div>
-      </div>
-    </section>
+        <div id="trend-grid" class="trend-grid" aria-live="polite"><div class="empty-state">Loading the latest genre signals…</div></div>
+      </section>
+    </div>
   </main>
 
-  <script src="./genre-index.js" defer></script>
+  <footer><div class="wrap footer-inner"><a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt=""><span>DanceFreq</span></a><div>Tune into what's next</div></div></footer>
+
+  <script>
+    const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
+    const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
+    const hubs=[['House','house','Groove-led sounds from deep house to tech house.'],['Techno','techno','Hypnotic, driving, and forward-moving club music.'],['Trance','trance','Atmospheric, emotional, and uplifting electronic music.'],['Dubstep','dubstep','Bass-heavy sounds built around impact and movement.'],['Drum & Bass','drum-and-bass','Fast breaks, heavy bass, and constantly evolving energy.'],['Hard Dance','hard-dance','High-intensity sounds built for movement and release.']];
+    const hubGrid=document.getElementById('hub-grid');
+    const trendGrid=document.getElementById('trend-grid');
+    const detailUrl=slug=>'./genre-detail.html?genre='+encodeURIComponent(slug);
+    const slugify=value=>String(value).toLowerCase().trim().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    hubGrid.innerHTML=hubs.map(([name,slug,description],index)=>`<a class="hub-card" href="${detailUrl(slug)}"><small>0${index+1}</small><h3>${name}</h3><p>${description}</p></a>`).join('');
+    async function loadTrends(){
+      try{
+        const response=await fetch(`${SUPABASE_URL}/rest/v1/latest_genre_trends?select=*&order=overall_change_pct.desc.nullslast&limit=6`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+        if(!response.ok) throw new Error('Trend request failed');
+        const trends=await response.json();
+        if(!trends.length) throw new Error('No trend data yet');
+        trendGrid.innerHTML=trends.map(trend=>{const name=trend.name||trend.genre_name||'Unknown genre';const change=Number(trend.overall_change_pct);const changeText=Number.isFinite(change)?`${change>=0?'+':''}${change.toFixed(1)}%`:'New signal';return `<a class="trend-card" href="${detailUrl(trend.slug||slugify(name))}"><div class="trend-card-top"><span>${trend.hub||'Dance music'}</span><span class="trend-card-change">${changeText}</span></div><h3>${name}</h3><p>Open the detail page to explore its latest metrics and history.</p></a>`}).join('');
+      }catch(error){trendGrid.innerHTML='<div class="empty-state">Trend history will appear here as genre metrics are collected.</div>'}
+    }
+    loadTrends();
+  </script>
 </body>
 </html>
