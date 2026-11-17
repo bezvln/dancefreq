@@ -1,23 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Genre Detail · DanceFreq</title>
-  <link rel="stylesheet" href="../page.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Genre Detail — DanceFreq</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/page.css">
   <link rel="stylesheet" href="./genre-index.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="../index.html">DanceFreq</a>
-    <a class="back-link" href="./index.html">← Genre Index</a>
+  <header>
+    <nav class="nav wrap" aria-label="Primary navigation">
+      <a class="brand" href="/"><img src="/dancefreq-logo-transparent.png" alt="DanceFreq logo"><span>DanceFreq</span></a>
+      <div class="links">
+        <a href="/artist-discovery/">Artist Discovery</a>
+        <a href="/release-radar/">Release Radar</a>
+        <a class="active" href="/genre-index/">Genre Index</a>
+        <a href="/global-scenes/">Global Scenes</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </div>
+      <button class="menu" aria-label="Open navigation">☰</button>
+    </nav>
   </header>
 
   <main class="genre-detail-page">
-    <p class="eyebrow">GENRE SIGNAL</p>
+    <div class="wrap">
+      <a class="back-link" href="./">← Back to Genre Index</a>
 
-    <div id="genre-detail">
-      <p class="loading">Loading genre data...</p>
+      <section class="detail-hero">
+        <div>
+          <div class="eyebrow">GENRE SIGNAL</div>
+          <h1 id="genre-title">Genre</h1>
+          <p id="genre-description">A closer look at the artists, tracks, scenes, and momentum shaping this sound.</p>
+        </div>
+        <div class="detail-label">LIVE PROFILE<br><span>DATA IN DEVELOPMENT</span></div>
+      </section>
+
+      <section class="metric-grid" aria-label="Genre metrics">
+        <article class="metric-card"><small>OVERALL MOMENTUM</small><strong id="overall-score">—</strong><span>Awaiting trend history</span></article>
+        <article class="metric-card"><small>DJ MOMENTUM</small><strong id="dj-score">—</strong><span>Downloads, sets, and support</span></article>
+        <article class="metric-card"><small>LISTENER MOMENTUM</small><strong id="listener-score">—</strong><span>Streaming and audience activity</span></article>
+        <article class="metric-card"><small>CONFIDENCE</small><strong id="confidence-score">—</strong><span>Verified source coverage</span></article>
+      </section>
+
+      <section class="detail-section">
+        <div class="section-heading"><div><div class="eyebrow">DISCOVERY SIGNAL</div><h2>Trending DJs</h2></div><p>Artists connected to this genre will appear here as the directory develops.</p></div>
+        <div id="dj-grid" class="dj-grid"></div>
+      </section>
+
+      <section class="detail-section">
+        <div class="section-heading"><div><div class="eyebrow">LISTENING SIGNAL</div><h2>Trending tracks</h2></div><p>Recent releases and tracks gaining attention within this genre.</p></div>
+        <div id="track-list" class="track-list"></div>
+      </section>
+
+      <section class="history-panel">
+        <div class="eyebrow">HISTORICAL SIGNAL</div>
+        <h2>How this genre has been moving</h2>
+        <div class="chart-placeholder">Historical trend visualization will appear as daily data accumulates.</div>
+      </section>
     </div>
   </main>
 
