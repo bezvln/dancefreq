@@ -41,6 +41,8 @@
 .release-page{
   padding-top:150px !important;
 }
+/* Align the About hero with the other page headers without changing its layout. */
+.about-intro{transform:translateY(-30px)}
 .discovery-page{min-height:calc(100vh - 190px)}
 .discovery-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.72fr);align-items:end;gap:70px;margin-bottom:42px}
 .discovery-hero-side{align-self:end;padding-bottom:9px}
