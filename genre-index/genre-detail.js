@@ -16,7 +16,18 @@ const placeholderDjs=[
   {name:'Artist profile placeholder',role:'Group'},
   {name:'Artist profile placeholder',role:'Duo'}
 ];
-document.getElementById('dj-grid').innerHTML=placeholderDjs.map(artist=>`<article class="dj-card"><div class="dj-image">PROFILE IMAGE<br>COMING SOON</div><h3>${artist.name}</h3><p class="dj-role">${artist.role}</p></article>`).join('');
+const djGrid=document.getElementById('dj-grid');
+function renderArtistCards(artists){
+  djGrid.innerHTML=artists.map(artist=>{
+    const image=artist.profile_image_url
+      ? `<img src="${artist.profile_image_url}" alt="${artist.name}" loading="lazy" onerror="this.style.display='none'">`
+      : 'PROFILE IMAGE<br>COMING SOON';
+    const score=Number(artist.metric_score);
+    const scoreText=Number.isFinite(score)?` · ${score.toFixed(1)} signal`:'';
+    return `<article class="dj-card"><div class="dj-image">${image}</div><h3>${artist.name}</h3><p class="dj-role">${artist.artist_type||'Artist'}${scoreText}</p></article>`;
+  }).join('');
+}
+renderArtistCards(placeholderDjs);
 
 const placeholderTracks=['Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder','Track title placeholder'];
 document.getElementById('track-list').innerHTML=placeholderTracks.map((title,index)=>`<div class="track-row"><span class="track-number">0${index+1}</span><div><strong>${title}</strong><small>Artist name placeholder · Label placeholder</small></div><span class="track-meta">${genreName}</span><span class="track-status">Coming soon</span></div>`).join('');
@@ -34,6 +45,17 @@ document.getElementById('related-genres').innerHTML=(related.length?related:['Co
 
 const SUPABASE_URL='https://dkmssowizgbxfbhomkjf.supabase.co';
 const SUPABASE_KEY='sb_publishable_KfOm1lrpl0R55BwzhNzGmg_i1V8zzUO';
+async function loadGenreArtists(){
+  try{
+    const query=new URLSearchParams({select:'name,slug,profile_image_url,artist_type,status,metric_score',genre_name:`eq.${genreName}`,order:'metric_score.desc.nullslast',limit:'5'});
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/genre_top_artists?${query}`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    if(!response.ok) throw new Error('Artist request failed');
+    const artists=await response.json();
+    if(artists.length) renderArtistCards(artists);
+  }catch(error){
+    /* Keep the placeholders visible until the Supabase view is available. */
+  }
+}
 async function loadMetricPreview(){
   try{
     const query=new URLSearchParams({select:'*',name:`eq.${genreName}`,limit:'1'});
@@ -48,4 +70,5 @@ async function loadMetricPreview(){
     if(Number.isFinite(confidence)) document.getElementById('confidence-score').textContent=`${confidence.toFixed(0)}%`;
   }catch(error){/* Placeholder metrics remain visible until data is available. */}
 }
+loadGenreArtists();
 loadMetricPreview();
